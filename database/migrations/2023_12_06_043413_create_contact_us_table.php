@@ -13,23 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id('user_id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+        Schema::create('contact_us', function (Blueprint $table) {
+            $table->id();
             $table->char('phone_number', 18);
-            $table->longText('address')->nullable();
+            $table->string('email_address')->unique();
+            $table->longText('address');
+            $table->string('location_map');
             $table->integer('provinces_id')->nullable();
             $table->integer('regencies_id')->nullable();
             $table->integer('zip_code')->nullable();
             $table->string('country')->nullable();
-            $table->string('photos')->nullable();
-            $table->enum('status', ['active', 'non-active'])->default('non-active');
-            $table->string('roles')->default('CUSTOMER');
-            $table->rememberToken();
-            $table->softDeletes();
+            $table->string('office_hours');
             $table->timestamps();
         });
     }
@@ -41,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('contact_us');
     }
 };
