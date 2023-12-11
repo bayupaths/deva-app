@@ -1,0 +1,55 @@
+#page-auth {
+    background-color: #eeeeee;
+
+}
+.page-auth {
+    padding: 7rem 0;
+
+    .container-auth {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        background-color: #ffffff;
+
+        .image-placeholder {
+            max-width: 100%;
+            height: auto;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    }
+
+    .container-register {
+        margin: auto;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        background-color: #ffffff;
+    }
+}
+
+
+
+@media (max-width: 767px) {
+    // .row {
+    //     flex-direction: column-reverse;
+    // }
+
+    .col-md-6 {
+        width: 100%;
+    }
+
+    .container-auth {
+        margin-top: 20px;
+    }
+
+    .container-auth {
+        .image-placeholder {
+            display: none; /* Menyembunyikan gambar pada layar kecil */
+        }
+    }
+}
