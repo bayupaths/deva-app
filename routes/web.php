@@ -35,5 +35,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::group(['middleware' => 'adminauth'], function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
+        Route::get('/orders', [App\Http\Controller\Admin\OrderController::class, 'index'])->name('admin.orders');
     });
+});
+
+Route::get('/testing-admin', function() {
+    return view('test');
 });

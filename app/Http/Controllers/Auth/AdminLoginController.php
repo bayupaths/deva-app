@@ -15,7 +15,7 @@ class AdminLoginController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.login');
+        return view('pages.admin.auth.login');
     }
 
     /**
