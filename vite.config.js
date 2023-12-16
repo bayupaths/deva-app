@@ -19,7 +19,10 @@ export default defineConfig({
         alias: {
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
             '~simplebar': path.resolve(__dirname, 'node_modules/simplebar'),
-            '~feather-icons': path.resolve(__dirname, 'node_modules/feather-icons')
+            '~feather-icons': path.resolve(__dirname, 'node_modules/feather-icons'),
+            '~datatables.net-bs5': path.resolve(__dirname, 'node_modules/datatables.net-bs5'),
+            '~jquery': path.resolve(__dirname, 'node_modules/jquery'),
+            '~sweetalert2' : path.resolve(__dirname, 'node_modules/sweetalert2')
         }
     },
 });

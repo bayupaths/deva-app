@@ -9,8 +9,8 @@
                 Menu Utama
             </li>
 
-            <li class="sidebar-item active">
-                <a class="sidebar-link" href="index.html">
+            <li class="sidebar-item {{ request()->is('admin/dashboard*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard-admin') }}">
                     <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Dashboard</span>
                 </a>
             </li>
@@ -36,20 +36,20 @@
                 Data
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="ui-buttons.html">
+            <li class="sidebar-item {{ request()->is('admin/category*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('category.index') }}">
                     <i class="align-middle" data-feather="package"></i> <span class="align-middle">Kategori Produk</span>
                 </a>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="ui-forms.html">
+            <li class="sidebar-item {{ request()->is('admin/product*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('product.index') }}">
                     <i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Produk</span>
                 </a>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="ui-cards.html">
+            <li class="sidebar-item {{ request()->is('admin/customer*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('customer.index') }}">
                     <i class="align-middle" data-feather="users"></i> <span class="align-middle">Konsumen</span>
                 </a>
             </li>

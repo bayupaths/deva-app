@@ -23,7 +23,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 /**
  * Routes for the admin panel.
  */
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+Route::group(['prefix' => 'admin'], function () {
 
     /**
      * Admin Authentication Routes
@@ -36,6 +36,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
         Route::get('/orders', [App\Http\Controller\Admin\OrderController::class, 'index'])->name('admin.orders');
+        Route::get('/transactions', [App\Http\Controller\Admin\OrderController::class, 'index'])->name('admin.orders');
+        Route::resource('/category', App\Http\Controllers\Admin\CategoryController::class);
+        Route::resource('/product', App\Http\Controllers\Admin\ProductController::class);
+        Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
     });
 });
 

@@ -10,10 +10,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title')</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {{-- Font --}}
+    @stack('prepend-style')
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
-    @vite(['resources/sass/admin/main.scss', 'resources/js/admin/main.js'])
+    @vite(['resources/sass/admin/main.scss'])
+    @stack('addon-style')
 </head>
 
 <body>
@@ -32,6 +33,9 @@
         </div>
     </div>
 
+    @stack('prepend-script')
+    @vite(['resources/js/admin/main.js'])
+    @stack('addon-script')
 
 </body>
 
