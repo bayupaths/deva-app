@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-        <a class="sidebar-brand" href="index.html">
-            <span class="align-middle">AdminKit</span>
+        <a class="sidebar-brand" href="{{route('dashboard-admin')}}">
+            <img src="{{ url('/assets/images/deva.png') }}" alt="Logo" class="img-fluid w-10">
         </a>
 
         <ul class="sidebar-nav">
@@ -15,14 +15,19 @@
                 </a>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-profile.html">
-                    <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Pemesanan</span>
+            <li class="sidebar-item {{ request()->is('admin/orders*') ? 'active' : '' }}">
+                <a data-bs-target="#orders" data-bs-toggle="collapse" class="sidebar-link collapsed has-arrow">
+                    <i class="align-middle" data-feather="shopping-cart"></i> <span class="align-middle">Pemesanan</span>
                 </a>
+                <ul id="orders" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ route('admin.orders') }}"><i data-feather="arrow-right"></i> Daftar Pemesanan</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ route('processed.orders') }}"><i data-feather="arrow-right"></i> Pesanan Diproses</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ route('finished.orders') }}"><i data-feather="arrow-right"></i> Pesanan Selesai</a></li>
+                </ul>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-profile.html">
+            <li class="sidebar-item {{ request()->is('admin/transaction*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('admin.transaction') }}">
                     <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Transaksi</span>
                 </a>
             </li>
@@ -38,7 +43,8 @@
 
             <li class="sidebar-item {{ request()->is('admin/category*') ? 'active' : '' }}">
                 <a class="sidebar-link" href="{{ route('category.index') }}">
-                    <i class="align-middle" data-feather="package"></i> <span class="align-middle">Kategori Produk</span>
+                    <i class="align-middle" data-feather="package"></i> <span class="align-middle">Kategori
+                        Produk</span>
                 </a>
             </li>
 
@@ -75,4 +81,3 @@
         </ul>
     </div>
 </nav>
-

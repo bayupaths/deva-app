@@ -35,14 +35,18 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'adminauth'], function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
-        Route::get('/orders', [App\Http\Controller\Admin\OrderController::class, 'index'])->name('admin.orders');
-        Route::get('/transactions', [App\Http\Controller\Admin\OrderController::class, 'index'])->name('admin.orders');
+        Route::group(['prefix' => 'orders'], function() {
+            Route::get('/', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders');
+            Route::get('/processed', [App\Http\Controllers\Admin\OrderController::class, 'procesed_order'])->name('processed.orders');
+            Route::get('/finished', [App\Http\Controllers\Admin\OrderController::class, 'finished_order'])->name('finished.orders');
+        });
+        Route::get('/transaction', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transaction');
         Route::resource('/category', App\Http\Controllers\Admin\CategoryController::class);
         Route::resource('/product', App\Http\Controllers\Admin\ProductController::class);
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
     });
 });
 
-Route::get('/testing-admin', function() {
-    return view('test');
+Route::get('/landing-page', function() {
+    return view('landing');
 });

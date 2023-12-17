@@ -29,7 +29,7 @@ class ProductCategory extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'image'];
+    protected $fillable = ['name', 'slug', 'description', 'subcategories', 'image'];
 
     /**
      * product

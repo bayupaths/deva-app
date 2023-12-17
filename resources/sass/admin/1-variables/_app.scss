@@ -321,3 +321,26 @@ $hamburger-width-bottom: 16px !default;
 $stat-bg: lighten($primary, 35%) !default;
 $stat-icon-color: $primary !default;
 $stat-padding: $spacer * 0.75 !default;
+
+//$sidebar: $theme-light;
+$sidebar-alt: #e8eff0;
+$sidebar-text: #fff;
+$sidebar-icons: #fff;
+$sidebar-text-dark: #818181;
+$sidebar-icons-dark: #9eabc0;
+$list-divider-margin: 10px 0 20px 30px;
+$list-divider-margin-minisidebar: 10px;
+
+$sidebar-width-full: 260px;
+$sidebar-width-mini: 65px;
+$mailbox-width: 300px;
+$mailbox-height: 200px;
+
+$sidebar-selected-bg: linear-gradient(to right, #8971ea, #7f72ea, #7574ea, #6a75e9, #5f76e8);
+
+$sidebar-link-padding: 12px 30px;
+$minisidebar-link-padding: 12px 15px;
+$sidebar-icon-size: 20px;
+$sidebar-first-level-padding: 0 0 10px 0;
+$sidebar-first-level-link-padding: 12px 15px;
+$sidebar-first-level-icon-size: 20px;
