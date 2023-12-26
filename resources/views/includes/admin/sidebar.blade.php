@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="{{route('dashboard-admin')}}">
-            <img src="{{ url('/assets/images/deva.png') }}" alt="Logo" class="img-fluid w-10">
+            <img src="{{ url('/assets/images/deva-logo.png') }}" alt="Logo" class="img-fluid w-10">
         </a>
 
         <ul class="sidebar-nav">

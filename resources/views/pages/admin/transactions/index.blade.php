@@ -42,33 +42,19 @@
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td>INV1234-20231217</td>
                                         <td>ORD1234-20231212</td>
-                                        <td>12-12-2023</td>
-                                        <td>John</td>
-                                        <td>Banner</td>
-                                        <td>Rp. 50.000,-</td>
-                                        <td><a href="#"><span class="badge bg-warning">Diproses</a></td>
-                                        <td><a href="#"><span class="badge bg-warning">Diproses</a></td>
+                                        <td>17-12-2023</td>
+                                        <td>Mrs. Adela Beahan</td>
+                                        <td>Transfer Bank</td>
+                                        <td>Rp. 150.000,-</td>
+                                        <td><a href="#"><span class="badge bg-secondary">UNPAID</a></td>
                                         <td>
                                             <a href="#" class="btn btn-primary">
                                                 <i data-feather="chevron-right" class="feather-14"></i>
                                             </a>
                                         </td>
                                      </tr>
-                                    <tr>
-                                        <td>ORD1234-20231212</td>
-                                        <td>12-12-2023</td>
-                                        <td>John</td>
-                                        <td>Banner</td>
-                                        <td>Rp. 50.000,-</td>
-                                        <td><a href="#"><span class="badge bg-warning">Pending</a></td>
-                                        <td><a href="#"><span class="badge bg-warning">Pending</a></td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary">
-                                                <i data-feather="chevron-right" class="feather-14"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
                             </table>
                         </div>
                     </div>

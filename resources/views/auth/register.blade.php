@@ -3,13 +3,15 @@
 @section('content')
     <div class="page-auth" id="register">
         <div class="container col-md-5 container-register" data-aos="fade-up">
+            {{-- <img src="{{ url('/assets/images/deva-logo.png') }}" alt="" height="40"
+            class="d-inline-block align-text-top"> --}}
             {{-- <div class="col-md-6 text-center">
                     <img src="/assets/images/login-placeholder-new.jpg" alt="login-placeholder"
                         class="image-placeholder mb-4 mb-lg-none">
                 </div> --}}
             <div class="row">
                 <div class="text-center mt-2">
-                    <div class="h3">Registrasi Konsumen</div>
+                    <div class="h4">Registrasi Konsumen</div>
                 </div>
                 <form method="POST" action="" enctype="multipart/form-data">
                     @csrf

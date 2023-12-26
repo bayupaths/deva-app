@@ -1,0 +1,61 @@
+// Override Bootstrap variables or add your custom styles here
+$navbar-dark-bg: #332c2b;
+$navbar-dark-hover-color: #ffc107;
+$navbar-dark-color: #fff;
+$navbar-dark-active-color: #ffc107;
+$search-form-bg: #ffffff;
+$search-form-border-color: #ffc107;
+$login-btn-bg: #ffc107;
+$register-btn-border: #ffc107;
+$register-btn-bg: #332c2b;
+
+header {
+    background-color: $navbar-dark-bg;
+    .navbar {
+        color: $navbar-dark-color;
+        .bg-dark {
+            background-color: $navbar-dark-bg;
+        }
+
+        .nav-link {
+            margin-right: 15px;
+            color: $navbar-dark-color;
+
+            &:hover {
+                color: $navbar-dark-hover-color;
+            }
+
+            &.active {
+                color: $navbar-dark-active-color;
+            }
+        }
+    }
+}
+
+.navbar-form {
+    // Set styles for the search form
+    .form-control {
+        // Set the background color for the search form
+        background-color: $search-form-bg;
+
+        // Set the border color for the search form
+        border-color: $search-form-border-color;
+
+        // Add other styles as needed
+    }
+}
+
+.login-btn {
+    // Set styles for the login button
+    background-color: $login-btn-bg;
+}
+
+.register-btn {
+    color: $navbar-dark-color;
+    border: 1px solid $register-btn-border;
+    background-color: $register-btn-bg;
+    &:hover {
+        color: $navbar-dark-color;
+        background-color: #ffc107;
+    }
+}

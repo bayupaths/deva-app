@@ -24,5 +24,8 @@ class Admin extends Authenticatable
         'remember_token',
     ];
 
-
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'admin_id', 'admin_id');
+    }
 }

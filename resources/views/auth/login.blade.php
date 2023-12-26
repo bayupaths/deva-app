@@ -3,17 +3,19 @@
 @section('content')
     <div class="page-auth">
         <div class="container container-auth" data-aos="fade-up">
+            <img src="{{ url('/assets/images/deva-logo.png') }}" alt="" height="40"
+            class="d-inline-block align-text-top">
             <div class="row align-items-center">
                 <div class="col-md-6 text-center">
                     <img src="/assets/images/login-placeholder-new.jpg" alt="login-placeholder"
-                        class="image-placeholder mb-4 mb-lg-none">
+                        class="image-placeholder mb-4 mb-lg-none w-500">
                 </div>
                 <div class="col-md-6">
                     <div class="row">
-                        <div class="text-center mt-4">
-                            <div class="h3">Selamat Datang Kembali</div>
-                            <p class="lead">
-                                Masuk ke akun Anda untuk melanjutkan
+                        <div class="text-center mt-2">
+                            <div class="h4">Selamat Datang</div>
+                            <p class="">
+                                Silahkan login untuk melanjutkan
                             </p>
                         </div>
                         <form method="POST" action="" enctype="multipart/form-data">
