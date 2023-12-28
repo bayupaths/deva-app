@@ -15,7 +15,9 @@
         "vite": "^4.0.4"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^40.2.0",
         "datatables.net-bs5": "^1.13.8",
+        "dropzone": "^6.0.0-beta.2",
         "feather-icons": "^4.29.1",
         "jquery": "^3.7.1",
         "resize-observer-polyfill": "^1.5.1",

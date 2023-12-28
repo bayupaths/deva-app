@@ -1,6 +1,6 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-        <a class="sidebar-brand" href="{{route('dashboard-admin')}}">
+        <a class="sidebar-brand" href="{{ route('dashboard-admin') }}">
             <img src="{{ url('/assets/images/deva-logo.png') }}" alt="Logo" class="img-fluid w-10">
         </a>
 
@@ -16,14 +16,10 @@
             </li>
 
             <li class="sidebar-item {{ request()->is('admin/orders*') ? 'active' : '' }}">
-                <a data-bs-target="#orders" data-bs-toggle="collapse" class="sidebar-link collapsed has-arrow">
-                    <i class="align-middle" data-feather="shopping-cart"></i> <span class="align-middle">Pemesanan</span>
+                <a class="sidebar-link" href="{{ route('admin.orders') }}">
+                    <i class="align-middle" data-feather="shopping-cart"></i> <span
+                        class="align-middle">Order</span>
                 </a>
-                <ul id="orders" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item"><a class="sidebar-link" href="{{ route('admin.orders') }}"><i data-feather="arrow-right"></i> Daftar Pemesanan</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="{{ route('processed.orders') }}"><i data-feather="arrow-right"></i> Pesanan Diproses</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="{{ route('finished.orders') }}"><i data-feather="arrow-right"></i> Pesanan Selesai</a></li>
-                </ul>
             </li>
 
             <li class="sidebar-item {{ request()->is('admin/transaction*') ? 'active' : '' }}">

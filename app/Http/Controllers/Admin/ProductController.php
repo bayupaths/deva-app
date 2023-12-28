@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 use App\Models\Product;
 use App\Models\ProductCategory;
-
+use App\Models\ProductGallery;
 class ProductController extends Controller
 {
     /**
@@ -33,7 +33,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = ProductCategory::all();
-        return view('pages.admin.products.create', compact('categories'));
+        return view('pages.admin.products.create-new', compact('categories'));
     }
 
     /**
@@ -44,7 +44,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'category' => 'required|exists:product_categories,category_id',
             'name' => 'required|max:255|min:5|string|unique:products,name',
@@ -75,12 +74,35 @@ class ProductController extends Controller
         }
         // Rule is validated
         $validated = $validator->validated();
+
+        // dd($validated);
         // Prepare to save
         $data = $validated;
         // make unique slug title
         $data['slug'] = Str::slug($validated['name']);
         $data['category_id'] = $validated['category'];
         $save = Product::create($data);
+
+        $request->validate([
+            'images.*' => 'required|file|mimes:jpeg,jpg,png,gif|max:2048', // Adjust validation rules as needed
+        ]);
+
+
+        $files = $request->file('images');
+        foreach ($files as $file) {
+            $path = $file->store('assets/images/product_galleries', 'public');
+            // Save to ProductGallery model
+            ProductGallery::create([
+                'product_id' => $save->id,
+                'file_name' => $file->getClientOriginalName(),  // Get original file name
+                'file_type' => $file->getClientMimeType(),      // Get file type
+                'file_size' => $file->getSize(),                // Get file size in bytes
+                'file_path' => $path,
+                // Add any other fields as needed
+            ]);
+        }
+
+
         if ($save) {
             return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan');
         } else {

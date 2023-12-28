@@ -16,21 +16,19 @@ class DashboardController extends Controller
         $lastWeek = now()->subWeek();
 
         $totalSales = Order::sum('total_price');
-        $totalRevenue = Payment::sum('payement_amount');
+        $totalRevenue = Payment::sum('payment_amount');
         $totalCustomer = User::count();
         $totalOrder = Order::count();
 
-        $revenueThisWeek = Order::where('created_at', '>=', $lastWeek)->sum('total_price');
-        if($totalRevenue != 0) {
-            $precentageRevenue = ($revenueThisWeek / $totalRevenue) * 100;
-        } else {
-            $precentageRevenue = 0;
-        }
 
         $recentOrders =  OrderDetail::with(['order.user'])->latest()->take(5)->get();
         $recentPayments = Payment::with(['order.user'])->latest()->take(5)->get();
 
         return view('pages.admin.dashboard.index', [
+            'totalSales' => $totalSales,
+            'totalRevenue' => $totalRevenue,
+            'totalCustomer' => $totalCustomer,
+            'totalOrder' => $totalOrder,
             'recentOrders' => $recentOrders,
             'recentPayments' => $recentPayments
         ]);

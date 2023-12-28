@@ -12,8 +12,11 @@
     <title>@yield('title')</title>
     {{-- Font --}}
     @stack('prepend-style')
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
-    @vite(['resources/sass/admin/main.scss'])
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:ital,wght@0,300;0,400;0,600;1,300&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    @vite(['resources/sass/admin/main.scss', 'resources/js/admin/main.js'])
     @stack('addon-style')
 </head>
 
@@ -34,7 +37,7 @@
     </div>
 
     @stack('prepend-script')
-    @vite(['resources/js/admin/main.js'])
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     @stack('addon-script')
 
 </body>

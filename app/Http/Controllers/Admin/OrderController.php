@@ -8,34 +8,51 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    /**
+     * index
+     *
+     * @return void
+     */
     public function index()
     {
-        $orders = OrderDetail::with(['order.user', 'product.productGallery'])
+        $orders = OrderDetail::with(['order.user', 'product', 'order.payment'])
             ->whereHas('order', function ($query) {
                 $query->orderBy('order_date', 'desc');
             })
             ->get();
-            // dd($orders);
+        // dd($orders);
         return view('pages.admin.orders.index', compact('orders'));
     }
 
-    public function procesed_order()
+    /**
+     * status_order
+     *
+     * @param  String $status
+     * @return void
+     */
+    public function status_order(String $status)
     {
-        $procesedOrders = OrderDetail::with(['order.user', 'product.productGallery'])
-            ->whereHas('order', function ($query) {
-                $query->where('order_status', 'PROCESSED');
+        $orders = OrderDetail::with(['order.user', 'product', 'order.payment'])
+            ->whereHas('order', function ($query) use ($status) {
+                $query->where('order_status', $status);
             })
             ->get();
-        return view('pages.admin.orders.processed', compact('procesedOrders'));
+        return view('pages.admin.orders.index', compact('orders'));
     }
 
-    public function finished_order()
+    /**
+     * order_detail
+     *
+     * @param  String $code
+     * @return void
+     */
+    public function order_detail(String $code)
     {
-        $finisheddOrders = OrderDetail::with(['order.user', 'product.productGallery'])
-            ->whereHas('order', function ($query) {
-                $query->where('order_status', 'FINISHED');
+        $order = OrderDetail::with(['order.user', 'product.productGallery', 'order.payment', 'orderDetailImage'])
+            ->whereHas('order', function ($query) use ($code) {
+                $query->where('order_code', $code);
             })
-            ->get();
-        return view('pages.admin.orders.finished',  compact('finisheddOrders'));
+            ->firstOrFail();
+        return view('pages.admin.orders.detail', compact('order'));
     }
 }

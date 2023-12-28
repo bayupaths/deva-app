@@ -8,6 +8,7 @@ import jQuery from "jquery";
 import "./modules/sidebar";
 import "./modules/theme";
 import "./modules/feather";
+// import "./modules/dropzone";
 
 
 // dataTable

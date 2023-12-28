@@ -15,15 +15,18 @@ class AdminAuthenticated
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $roles)
     {
-        if (Auth::guard('admin')->user()) {
+        if (Auth::guard('admin')->user() && Auth::guard('admin')->user()->roles === $roles) {
             return $next($request);
         }
+
         if ($request->ajax() || $request->wantsJson()) {
             return response('Unauthorized.', 401);
         } else {
             return redirect(route('admin-login'));
         }
+
+        abort(403, 'Unauthorized');
     }
 }

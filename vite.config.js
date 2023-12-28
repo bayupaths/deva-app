@@ -22,7 +22,8 @@ export default defineConfig({
             '~feather-icons': path.resolve(__dirname, 'node_modules/feather-icons'),
             '~datatables.net-bs5': path.resolve(__dirname, 'node_modules/datatables.net-bs5'),
             '~jquery': path.resolve(__dirname, 'node_modules/jquery'),
-            '~sweetalert2' : path.resolve(__dirname, 'node_modules/sweetalert2')
+            '~sweetalert2' : path.resolve(__dirname, 'node_modules/sweetalert2'),
+            '~dropzone' : path.resolve(__dirname, 'node_modules/dropzone')
         }
     },
 });

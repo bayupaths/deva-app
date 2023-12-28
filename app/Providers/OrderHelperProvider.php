@@ -41,4 +41,20 @@ class OrderHelperProvider extends ServiceProvider
         $statusColors = self::getOrderStatusColors();
         return $statusColors[$status] ?? 'default';
     }
+
+    public static function getPaymentStatusColors()
+    {
+        return [
+            'UNPAID' => 'bg-secondary',
+            'PROCESSED' => 'bg-warning',
+            'SUCCESS' => 'bg-success',
+            'FAILED' => 'bg-danger',
+        ];
+    }
+
+    public static function getPaymentStatusColor($status)
+    {
+        $statusColors = self::getOrderStatusColors();
+        return $statusColors[$status] ?? 'default';
+    }
 }

@@ -1,5 +1,13 @@
 @extends('layouts.admin')
 
+@section('title')
+    Deva Digital Print
+@endsection
+
+@push('addon-style')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.min.css">
+@endpush
+
 @section('content')
     <div class="container-fluid p-0">
 
@@ -22,11 +30,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">2.382</h1>
-                                    <div class="mb-0">
-                                        <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
+                                    <h1 class="mt-1 mb-3">Rp. {{ number_format($totalSales) }}</h1>
+                                    {{-- <div class="mb-0">
+                                        <span class=""> <i class="mdi mdi-arrow-bottom-right"></i>  {{ $precentageSales }}% </span>
                                         <span class="text-muted">Since last week</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="card">
@@ -42,11 +50,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">14.212</h1>
-                                    <div class="mb-0">
-                                        <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25% </span>
+                                    <h1 class="mt-1 mb-3">{{ $totalCustomer }}</h1>
+                                    {{-- <div class="mb-0">
+                                        <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 0% </span>
                                         <span class="text-muted">Since last week</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -64,11 +72,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">Rp. 21.300</h1>
-                                    <div class="mb-0">
-                                        <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
+                                    <h1 class="mt-1 mb-3">Rp. {{ number_format($totalRevenue) }}</h1>
+                                    {{-- <div class="mb-0">
+                                        <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i>  {{ $precentageRevenue }}% </span>
                                         <span class="text-muted">Since last week</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="card">
@@ -84,11 +92,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">64</h1>
-                                    <div class="mb-0">
+                                    <h1 class="mt-1 mb-3">{{ $totalOrder }}</h1>
+                                    {{-- <div class="mb-0">
                                         <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.25% </span>
                                         <span class="text-muted">Since last week</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -113,41 +121,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>TRX202123131131</td>
-                                    <td>15-12-2023</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td>Rp. 150.000</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>TRX202123131131</td>
-                                    <td>15-12-2023</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td>Rp. 150.000</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>TRX202123131131</td>
-                                    <td>15-12-2023</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td>Rp. 150.000</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>TRX202123131131</td>
-                                    <td>15-12-2023</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td>Rp. 150.000</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>TRX202123131131</td>
-                                    <td>15-12-2023</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td>Rp. 150.000</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
+                                @forelse ($recentPayments as $payment)
+                                    <tr>
+                                        <td>{{ $payment->payment_code }}</td>
+                                        <td>{{ Carbon\Carbon::parse($payment->payment_date)->format('d F Y H:i') ?? '' }}
+                                        </td>
+                                        <td>{{ $payment->order->user->name }}</td>
+                                        <td>Rp. {{ number_format($payment->payment_amount) }}</td>
+                                        @php
+                                            $statusColor = \App\Providers\OrderHelperProvider::getPaymentStatusColor($payment->payment_status);
+                                        @endphp
+                                        <td> <a href="#">
+                                                <span
+                                                    class="badge {{ $statusColor }}">{{ $payment->payment_status }}</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -174,55 +165,21 @@
                                 @forelse ($recentOrders as $item)
                                     <tr>
                                         <td>{{ $item->order->order_code }}</td>
-                                        <td>{{ Carbon\Carbon::parse($item->order->order_date)->format('d F Y') ?? '' }}</td>
+                                        <td>{{ Carbon\Carbon::parse($item->order->order_date)->format('d F Y') ?? '' }}
+                                        </td>
                                         <td>{{ $item->product->name }}</td>
                                         <td>{{ $item->order->user->name }}</td>
                                         @php
                                             $statusColor = \App\Providers\OrderHelperProvider::getOrderStatusColor($item->order->order_status);
                                         @endphp
                                         <td>
-                                            <a href="#"><span class="badge {{ $statusColor }}">{{ $item->order->order_status }}</span></a>
+                                            <a href="#"><span
+                                                    class="badge {{ $statusColor }}">{{ $item->order->order_status }}</span></a>
                                         </td>
 
                                     </tr>
                                 @empty
                                 @endforelse
-
-                                <tr>
-                                    <td>ORD20231214122</td>
-                                    <td>14-12-2023</td>
-                                    <td>Stiker Vinyl Outdoor</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>ORD20231214122</td>
-                                    <td>14-12-2023</td>
-                                    <td>Stiker Vinyl Outdoor</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>ORD20231214122</td>
-                                    <td>14-12-2023</td>
-                                    <td>Stiker Vinyl Outdoor</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>ORD20231214122</td>
-                                    <td>14-12-2023</td>
-                                    <td>Stiker Vinyl Outdoor</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>ORD20231214122</td>
-                                    <td>14-12-2023</td>
-                                    <td>Stiker Vinyl Outdoor</td>
-                                    <td>Mrs. Adela Beahan</td>
-                                    <td><span class="badge bg-secondary">PENDING</span></td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -243,3 +200,16 @@
         </div>
     </div>
 @endsection
+
+@push('addon-script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Berhasil',
+                text: '{{ session('success') }}',
+            });
+        @endif
+    </script>
+@endpush

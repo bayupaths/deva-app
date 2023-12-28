@@ -46,5 +46,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function order() {}
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'user_id');
+    }
 }

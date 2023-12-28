@@ -30,19 +30,20 @@ Route::group(['prefix' => 'admin'], function () {
      */
     Route::get('/login', [\App\Http\Controllers\Auth\AdminLoginController::class, 'index'])->name('admin-login');
     Route::post('/login', [\App\Http\Controllers\Auth\AdminLoginController::class, 'process'])->name('admin-login-process');
-    Route::get('/logout', [\App\Http\Controllers\Auth\AdminLoginController::class, 'logout'])->name('admin-logout');
+    Route::post('/logout', [\App\Http\Controllers\Auth\AdminLoginController::class, 'logout'])->name('admin-logout');
 
-    Route::group(['middleware' => 'adminauth'], function () {
+    Route::group(['middleware' => 'adminauth:ADMIN'], function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
         Route::group(['prefix' => 'orders'], function() {
             Route::get('/', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders');
-            Route::get('/processed', [App\Http\Controllers\Admin\OrderController::class, 'procesed_order'])->name('processed.orders');
-            Route::get('/finished', [App\Http\Controllers\Admin\OrderController::class, 'finished_order'])->name('finished.orders');
+            Route::get('/{status}/status', [App\Http\Controllers\Admin\OrderController::class, 'status_order'])->name('admin.orders.status');
+            Route::get('/{code}/details', [App\Http\Controllers\Admin\OrderController::class, 'order_detail'])->name('admin.order.details');
         });
         Route::get('/transaction', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transaction');
         Route::resource('/category', App\Http\Controllers\Admin\CategoryController::class);
         Route::resource('/product', App\Http\Controllers\Admin\ProductController::class);
+        Route::post('/products/gallery/upload', [App\Http\Controllers\Admin\ProductGalleryController::class, 'uploadGallery'])->name('product.gallery.upload');
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
     });
 });
