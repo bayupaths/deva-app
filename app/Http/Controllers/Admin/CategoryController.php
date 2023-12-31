@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductCategoryRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 use App\Models\ProductCategory;
 
@@ -42,44 +41,18 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductCategoryRequest $request)
     {
-        // set validate product category
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:product_categories|max:255',
-            // 'description' => 'required|max:500',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ], [
-            'name.required' => 'Nama kategori wajib diisi.',
-            'name.unique' => 'Nama kategori sudah ada, pilih nama lain.',
-            'name.max' => 'Nama kategori tidak boleh melebihi 255 karakter.',
-            'name.required' => 'Nama kategori wajib diisi.',
-            'name.unique' => 'Nama kategori sudah digunakan. Pilih nama lain.',
-            // 'description.required' => 'Deskripsi kategori wajib diisi.',
-            // 'description.max' => 'Deskripsi kategori tidak boleh melebihi 500 karakter.',
-            'image.required' => 'Gambar kategori wajib diunggah.',
-            'image.image' => 'File harus berupa gambar.',
-            'image.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg, gif.',
-            'image.max' => 'Ukuran gambar tidak boleh melebihi 2 MB.',
-        ]);
-
-        // Conditions if validation is fails
-        if ($validator->fails()) {
-            return redirect()->route('category.create')->withErrors($validator)->withInput();
-        }
-
-        // Rule is validated
-        $validated = $validator->validated();
-        // Prepare to save
-        $data = $validated;
-        // make unique slug title
-        $data['slug'] = Str::slug($validated['name']);
-        $data['image'] = $request->file('image')->store('assets/images/category', 'public');
-        $save = ProductCategory::create($data);
-        if ($save) {
-            return redirect()->route('category.index')->with('success', 'Kategori produk berhasil ditambahkan');
-        } else {
-            return redirect()->route('category.create')->with('errors', 'Kategori produk gagal ditambahkan');
+        try {
+            $slug = Str::slug($request->input('name'));
+            ProductCategory::create([
+                'name' => $request->input('name'),
+                // 'description' => $request->input('description'),
+                'slug' => $slug,
+            ]);
+            return redirect()->route('category.index')->with('success', 'Kategori produk berhasil disimpan.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan. Silakan coba lagi.']);
         }
     }
 
@@ -113,53 +86,19 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductCategory $category)
+    public function update(ProductCategoryRequest $request, ProductCategory $category)
     {
-        // set validate product category
-        $validator = Validator::make($request->all(), [
-            'name' => [
-                'required', 'max:255',
-                Rule::unique('product_categories', 'name')
-                    ->where(function ($query) use ($category) {
-                        $query->where('category_id', '<>', $category->category_id);
-                    })
-            ],
-            // 'description' => 'required|max:500',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-        ], [
-            'name.required' => 'Nama kategori wajib diisi.',
-            'name.unique' => 'Nama kategori sudah ada, pilih nama lain.',
-            'name.max' => 'Nama kategori tidak boleh melebihi 255 karakter.',
-            'name.required' => 'Nama kategori wajib diisi.',
-            'name.unique' => 'Nama kategori sudah digunakan. Pilih nama lain.',
-            // 'description.required' => 'Deskripsi kategori wajib diisi.',
-            // 'description.max' => 'Deskripsi kategori tidak boleh melebihi 500 karakter.',
-            'image.required' => 'Gambar kategori wajib diunggah.',
-            'image.image' => 'File harus berupa gambar.',
-            'image.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg, gif.',
-            'image.max' => 'Ukuran gambar tidak boleh melebihi 2 MB.',
-        ]);
-
-        // Conditions if validation is fails
-        if ($validator->fails()) {
-            return redirect()->route('category.edit', $category->slug)->withErrors($validator)->withInput();
+        try {
+            $category = ProductCategory::findOrFail($category->category_id);
+            $category->update([
+                'name' => $request->input('name'),
+                // 'description' => $request->input('description'),
+                'slug' => Str::slug($request->input('name')),
+            ]);
+            return redirect()->route('category.index')->with('success', 'Kategori produk berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan. Silakan coba lagi.']);
         }
-
-        // Rule is validated
-        $validated = $validator->validated();
-        // Prepare to save
-        $data = $validated;
-        // check image is uploaded
-        if ($request->hasFile('image')) {
-            if (Storage::disk('public')->exists($category->image)) {
-                Storage::disk('public')->delete($category->image);
-            }
-            $data['image'] = $request->file('image')->store('assets/images/category', 'public');
-        }
-
-        $data['slug'] = Str::slug($validated['name']);
-        $category->update($data);
-        return redirect()->route('category.index')->with('success', 'Kategori produk berhasil diperbarui');
     }
 
     /**
@@ -170,8 +109,12 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $item = ProductCategory::findOrFail($id);
-        $item->delete();
-        return redirect()->route('category.index')->with('success', 'Kategori produk berhasil dihapus');
+        try {
+            $category = ProductCategory::findOrFail($id);
+            $category->delete();
+            return redirect()->route('category.index')->with('success', 'Kategori produk berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan. Silakan coba lagi.']);
+        }
     }
 }

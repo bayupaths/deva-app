@@ -58,8 +58,7 @@ class OrderDetail extends Model
      */
     public function productSpecification()
     {
-        return $this->belongsToMany(ProductSpecification::class, 'ordered_detail_specifications')
-            ->using(OrderedDetailSpecifications::class);
+        return $this->belongsToMany(ProductSpecification::class, 'ordered_detail_specifications', 'order_detail_id', 'spec_id');
     }
 
     /**

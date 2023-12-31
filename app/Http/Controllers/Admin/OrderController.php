@@ -53,6 +53,8 @@ class OrderController extends Controller
                 $query->where('order_code', $code);
             })
             ->firstOrFail();
-        return view('pages.admin.orders.detail', compact('order'));
+        return view('pages.admin.orders.detail', [
+            'order' => $order,
+        ]);
     }
 }

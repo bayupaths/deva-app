@@ -109,12 +109,14 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Produk: Brosur A4 Full Color</h5>
+                        <h5 class="card-title">Produk: {{ $order->product->name }}</h5>
                         <p class="card-text">
                             <strong>Spesifikasi Produk:</strong><br>
-                            - Ukuran: A4 (210mm x 297mm)<br>
-                            - Warna: Full Color<br>
-                            - Kertas: Matte 150gsm<br>
+                            @forelse ($order->productSpecification()->get() as $item)
+                                - {{ $item->spec_type }} : {{ $item->spec_value }} <br>
+                            @empty
+                                - (kosong)
+                            @endforelse
                         </p>
                         <p class="card-text">
                             <strong>Detail Order:</strong><br>

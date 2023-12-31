@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 
-class OrderedDetailSpecifications extends Pivot
+class OrderedDetailSpecifications extends Model
 {
 
     /**
@@ -27,4 +27,35 @@ class OrderedDetailSpecifications extends Pivot
      * @var bool
      */
     public $incrementing = true;
+
+
+    /**
+     * fillable
+     *
+     * @var array
+     */
+    public $fillable = [
+        'spec_id',
+        'order_detail_id'
+    ];
+
+    /**
+     * productSpec
+     *
+     * @return void
+     */
+    public function productSpec()
+    {
+        return $this->belongsTo(ProductSpecification::class);
+    }
+
+    /**
+     * OrderDetail
+     *
+     * @return void
+     */
+    public function OrderDetail()
+    {
+        return $this->belongsTo(OrderDetail::class);
+    }
 }
