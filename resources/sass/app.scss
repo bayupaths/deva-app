@@ -2,16 +2,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap");
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/bootstrap";
 
 // Variables
-@import 'variables';
-@import "fonts";
-@import 'global';
-
+@import "utilities/variables";
+@import "utilities/fonts";
+@import "utilities/global";
 
 // component
-@import 'components/navbar';
+@import "components/navbar";
+@import "components/footer";
 
+// import page
 @import "pages/main";
+@import "pages/home";
 @import "pages/auth";

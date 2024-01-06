@@ -17,7 +17,11 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/product', [App\Http\Controllers\ProductController::class, 'index'])->name('product');
+Route::get('/product/category/{slug}', [App\Http\Controllers\ProductController::class, 'productsByCategory'])
+    ->name('productsByCategory');
+Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 'productDetail'])
+    ->name('productDetail');
 
 
 /**
@@ -35,7 +39,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'adminauth:ADMIN'], function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
-        Route::group(['prefix' => 'orders'], function() {
+        Route::group(['prefix' => 'orders'], function () {
             Route::get('/', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders');
             Route::get('/{status}/status', [App\Http\Controllers\Admin\OrderController::class, 'status_order'])->name('admin.orders.status');
             Route::get('/{code}/details', [App\Http\Controllers\Admin\OrderController::class, 'order_detail'])->name('admin.order.details');
@@ -48,6 +52,6 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
-Route::get('/landing-page', function() {
+Route::get('/landing-page', function () {
     return view('landing');
 });

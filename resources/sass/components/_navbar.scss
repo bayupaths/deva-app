@@ -1,5 +1,5 @@
 // Override Bootstrap variables or add your custom styles here
-$navbar-dark-bg: #332c2b;
+$navbar-dark-bg: #35363a;
 $navbar-dark-hover-color: #ffc107;
 $navbar-dark-color: #fff;
 $navbar-dark-active-color: #ffc107;
@@ -7,7 +7,7 @@ $search-form-bg: #ffffff;
 $search-form-border-color: #ffc107;
 $login-btn-bg: #ffc107;
 $register-btn-border: #ffc107;
-$register-btn-bg: #332c2b;
+$register-btn-bg: #35363a;
 
 header {
     background-color: $navbar-dark-bg;
@@ -27,6 +27,56 @@ header {
 
             &.active {
                 color: $navbar-dark-active-color;
+            }
+        }
+
+        @media (max-width: 576px) {
+            padding-top: 0;
+
+            .navbar-brand {
+                margin-right: 0; // Remove margin for the brand/logo
+            }
+
+            .navbar-nav {
+                margin-top: 10px; // Add some top margin to the navbar items
+                text-align: center; // Center-align navbar items
+            }
+
+            .nav-item {
+                margin-bottom: 10px; // Add some bottom margin to each navbar item
+            }
+
+            .register-btn .login-btn {
+                padding: 0.25rem 0.5rem; // Adjust padding for small buttons
+                font-size: 14px; // Set font size for small buttons
+            }
+
+            // Custom font size for nav-links
+            .navbar-nav .nav-link {
+                font-size: 14px;
+            }
+
+            // Custom font size for form elements in navbar
+            .navbar-form .form-control {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            /* Adjust the styles for the Navbar content */
+            .navbar-nav .nav-link {
+                font-size: 14px; /* Adjust the font size */
+                // padding: 8px 10px; /* Adjust the padding */
+            }
+
+            .register-btn .login-btn {
+                padding: 0.25rem 0.5rem; // Adjust padding for small buttons
+                font-size: 14px; // Set font size for small buttons
+            }
+
+            // Custom font size for form elements in navbar
+            .navbar-form .form-control {
+                font-size: 14px;
             }
         }
     }

@@ -23,7 +23,8 @@ export default defineConfig({
             '~datatables.net-bs5': path.resolve(__dirname, 'node_modules/datatables.net-bs5'),
             '~jquery': path.resolve(__dirname, 'node_modules/jquery'),
             '~sweetalert2' : path.resolve(__dirname, 'node_modules/sweetalert2'),
-            '~dropzone' : path.resolve(__dirname, 'node_modules/dropzone')
+            '~dropzone' : path.resolve(__dirname, 'node_modules/dropzone'),
+            '~aos' : path.resolve(__dirname, 'node_modules/aos')
         }
     },
 });

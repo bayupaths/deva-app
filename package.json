@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^40.2.0",
+        "aos": "^2.3.4",
         "datatables.net-bs5": "^1.13.8",
         "dropzone": "^6.0.0-beta.2",
         "feather-icons": "^4.29.1",
