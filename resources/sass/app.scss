@@ -12,6 +12,7 @@
 @import "utilities/global";
 
 // component
+@import "components/breadcrumbs";
 @import "components/navbar";
 @import "components/footer";
 
@@ -19,3 +20,4 @@
 @import "pages/main";
 @import "pages/home";
 @import "pages/auth";
+@import "pages/product";

@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/product', [App\Http\Controllers\ProductController::class, 'index'])->name('product');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/product', [App\Http\Controllers\ProductController::class, 'index'])->name('product-page');
 Route::get('/product/category/{slug}', [App\Http\Controllers\ProductController::class, 'productsByCategory'])
     ->name('productsByCategory');
 Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 'productDetail'])

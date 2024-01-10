@@ -33,7 +33,6 @@ class ProductController extends Controller
         }
 
         $products = $productsQuery;
-        dd($products);
         return view('pages.customers.product', [
             'categories' => $categories,
             'products' => $products,
