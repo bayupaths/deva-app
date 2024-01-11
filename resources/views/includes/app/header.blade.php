@@ -31,8 +31,8 @@
                     </li>
 
                 </ul>
-                <form class="d-flex navbar-form">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form action="{{ route('product-page') }}" class="d-flex navbar-form" method="GET">
+                    <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
                 </form>
                 @guest
                     <ul class="navbar-nav ml-auto">

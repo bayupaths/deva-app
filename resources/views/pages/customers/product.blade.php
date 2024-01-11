@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+    Deva Digital Print
 @endsection
 
 @section('content')
@@ -32,32 +33,67 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-3 category-sidebar">
-
-                    </div>
                     <!-- Konten Produk -->
                     <div class="col-md-9 product-content">
-
                         <div class="row row-cols-1 row-cols-md-4 g-4">
-                            <!-- Produk 1 -->
-                            <div class="col">
-                                <div class="card product-card">
-                                    <a href="#" target="_blank" class="text-decoration-none">
-                                        <img src="{{ url('/images/service-01.png') }}" class="card-img-top product-image"
-                                            alt="Produk 1">
-                                        <div class="card-body">
-                                            <h5 class="product-title">Produk 1</h5>
-                                            <p class="product-price">Rp. 50.000</p>
-                                        </div>
-                                        <div class="overlay">
-                                            <div class="text-overlay">
-                                                <h5 class="card-title">Nama Produk 2</h5>
-                                                <p class="card-text">Deskripsi singkat produk.</p>
+                            @php
+                                $incrementProduct = 0;
+                            @endphp
+                            @forelse ($products as $product)
+                                <div class="col">
+                                    <div class="card product-card" data-aos="fade-up"
+                                        data-aos-delay="{{ $incrementProduct += 100 }}">
+                                        <a href="{{ route('productDetail', $product->slug) }}" class="text-decoration-none">
+                                            <div class="products-thumbnail">
+                                                @if ($product->productGallery()->exists())
+                                                    <div class="products-image"
+                                                        style="background-image: url('{{ Storage::url($product->productGallery->first()->file_path) }}')">
+                                                    </div>
+                                                @else
+                                                    <div class="products-image"
+                                                        style="background-image: url('{{ url('/images/no-image.png') }}')">
+                                                    </div>
+                                                @endif
                                             </div>
-                                        </div>
-                                    </a>
+                                            <div class="card-body">
+                                                <h5 class="product-title">{{ $product->name }}</h5>
+                                                <p class="product-price">Rp. {{ number_format($product->price) }}</p>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
+                            @empty
+                                <div class="text-center py-5" data-aos="fade-up" data-aos-delay="100">
+                                    Produk Tidak Ditemukan
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col category-sidebar" data-aos="fade-up" data-aos-delay="200">
+                            <div class="label">
+                                <h5 class="text-wrapper">Kategori Produk</h5>
                             </div>
+                            <form action="{{ route('product-page') }}" class="d-flex" method="GET">
+                                <input class="form-control" type="search" name="search" placeholder="Cari Kategori"
+                                    aria-label="Search">
+                            </form>
+                            <ul class="list-group-categories">
+                                <li class="list-item">
+                                    <a href="{{ route('product-page') }}"
+                                        class="item-link {{ request()->routeIs('product-page') ? 'active' : '' }}">Semua
+                                        Kategori</a>
+                                </li>
+                                @forelse ($categories as $category)
+                                    <li class="list-item">
+                                        <a href="{{ route('productsByCategory', $category->slug) }}"
+                                            class="item-link {{ request()->route('slug') == $category->slug ? 'active' : '' }}">
+                                            {{ $category->name }}
+                                        </a>
+                                    </li>
+                                @empty
+                                @endforelse
+                            </ul>
                         </div>
                     </div>
                 </div>

@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title')</title>
-
+    <link rel="icon" href="{{ url('/assets/images/deva-logo.png') }}" type="image/png" />
 
     @stack('prepend-style')
     <link rel="stylesheet" href="{{ url('vendor/aos/aos.css') }}">

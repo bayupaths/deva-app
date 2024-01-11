@@ -1,0 +1,152 @@
+.page-details {
+    .product-gallery {
+        .page-title {
+            padding-bottom: 20px;
+        }
+    }
+
+    h5 {
+        color: #1e1e1e;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .product-gallery {
+        // margin-top: 20px;
+
+        img {
+            border-radius: 10px;
+        }
+
+        .main-image {
+            width: 700px;
+            height: 450px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .thumbnail-image {
+            margin-bottom: 20px;
+            border: 2px solid transparent;
+            width: 160px;
+            height: 85px;
+
+            &:hover,
+            &.active {
+                border: 2px solid #ffc107;
+            }
+        }
+    }
+
+    .store-heading {
+        margin-bottom: 10px;
+
+        h1 {
+            font-weight: normal;
+            font-size: 24px;
+            line-height: 36px;
+            color: #0c0d36;
+            margin-bottom: 0px;
+        }
+
+        .owner {
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 21px;
+            color: #979797;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 27px;
+            color: #ff7158;
+            margin-bottom: 10px;
+        }
+    }
+
+    .store-description {
+        p {
+            font-size: 16px;
+            color: #525252;
+            line-height: 180%;
+        }
+    }
+
+    .store-review {
+        .media {
+            img {
+                max-width: 50px;
+            }
+        }
+        .media-body {
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 180%;
+            color: #525252;
+            margin-bottom: 20px;
+
+            h5 {
+                font-weight: 300;
+                font-size: 16px;
+                color: #0c0d36;
+            }
+        }
+    }
+
+    .product-detail {
+        .product-title {
+            color: #0c0d36;
+            font-family: Poppins;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        .product-category {
+            color: #0c0d36;
+            font-family: Poppins;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        .product-price {
+            color: #e2d600;
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+
+        .product-description {
+            color: #525252;
+            font-family: Poppins;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 180%; /* 28.8px */
+        }
+
+        .action {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .btn-order {
+            border-radius: 6px;
+            color: #fff;
+            background-color: #e2d600;
+        }
+    }
+    .product-image {
+        margin-right: 1rem;
+    }
+}

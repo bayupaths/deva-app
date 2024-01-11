@@ -71,7 +71,9 @@ class ProductController extends Controller
     public function productDetail(String $slug)
     {
         $product = Product::with([
-            'productCategory', 'productGallery', 'productSpecification'
+            'productCategory', 'productGallery' => function ($query) {
+                $query->take(5);
+            }, 'productSpecification'
         ])->where('slug', $slug)->firstOrFail();
 
         $relatedProducts = Product::with(['productGallery'])
