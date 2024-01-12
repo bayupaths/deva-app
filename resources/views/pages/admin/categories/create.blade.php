@@ -45,7 +45,7 @@
                                         </div>
                                     @enderror
                                 </div> --}}
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label for="categoryImage" class="form-label">Foto Kategori</label>
                                     <input class="form-control @error('image') is-invalid @enderror" type="file"
                                         id="categoryImage" name="image" onchange="previewImage(this)">
@@ -54,7 +54,7 @@
                                             <strong>{{ $message }}</strong>
                                         </div>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <img id="preview" class="img-fluid w-25" alt="Preview Gambar" style="display: none;">
                                 </div>

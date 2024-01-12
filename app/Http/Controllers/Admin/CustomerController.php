@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CustomerRequest;
 
 use App\Models\User;
+use App\Models\OrderDetail;
 
 class CustomerController extends Controller
 {
@@ -40,7 +41,7 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
         try {
-            $request->validate();
+            // $request->validate();
             User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -62,19 +63,23 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        try {
-            // Temukan data konsumen berdasarkan ID
-            $customer = User::with('order')
-                ->whereHas('user', function ($query) use ($id) {
-                    $query->where('user_id', $id);
-                })->firstOrFail();
+        // try {
+        // Temukan data konsumen berdasarkan ID
+        $customer = User::where(['user_id' => $id])->firstOrFail();
+        $orders = OrderDetail::with(['order.user', 'product', 'order.payment'])
+            ->whereHas('order.user', function ($query) use ($id) {
+                $query->where('user_id', $id);
+            })->get();
 
-            // Tampilkan halaman detail konsumen
-            return view('pages.admin.customers.show', ['customer' => $customer]);
-        } catch (\Exception $e) {
-            // Tangani kesalahan jika terjadi (misalnya, konsumen tidak ditemukan)
-            return redirect()->route('customer.index')->withErrors(['error' => 'Konsumen tidak ditemukan.']);
-        }
+        // Tampilkan halaman detail konsumen
+        return view('pages.admin.customers.show', [
+            'customer' => $customer,
+            'orders' => $orders,
+        ]);
+        // } catch (\Exception $e) {
+        //     // Tangani kesalahan jika terjadi (misalnya, konsumen tidak ditemukan)
+        //     return redirect()->route('customer.index')->withErrors(['errors' => 'Konsumen tidak ditemukan.']);
+        // }
     }
 
     /**
@@ -93,7 +98,7 @@ class CustomerController extends Controller
             return view('pages.admin.customers.edit', ['customer' => $customer]);
         } catch (\Exception $e) {
             // Tangani kesalahan jika terjadi (misalnya, konsumen tidak ditemukan)
-            return redirect()->route('customer.index')->withErrors(['error' => 'Konsumen tidak ditemukan.']);
+            return redirect()->route('customer.index')->withErrors(['errors' => 'Konsumen tidak ditemukan.']);
         }
     }
 
@@ -107,12 +112,13 @@ class CustomerController extends Controller
     public function update(CustomerRequest $request, $id)
     {
         try {
-            $request->validate();
             $customer = User::findOrFail($id);
-            $customer->update($request->validate());
-            return redirect()->route('customer.index')->with('success', 'Data konsumen berhasil diperbarui');
+            $data = $request->all();
+            $data['password'] = bcrypt($request->input('password'));
+            $customer->update($data);
+            return redirect()->route('customer.show', $customer->user_id)->with('success', 'Data konsumen berhasil diperbarui');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan. Silakan coba lagi.']);
+            return redirect()->back()->withInput()->withErrors(['errors' => 'Terjadi kesalahan. Silakan coba lagi.']);
         }
     }
 
@@ -129,7 +135,27 @@ class CustomerController extends Controller
             $customer->delete();
             return redirect()->route('customer.index')->with('success', 'Data konsumen berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan. Silakan coba lagi.']);
+            return redirect()->back()->withErrors(['errors' => 'Terjadi kesalahan. Silakan coba lagi.']);
+        }
+    }
+
+    /**
+     * update_status
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return void
+     */
+    public function update_status(Request $request, $id)
+    {
+        try {
+            $customer = User::findOrFail($id);
+            $customer->status = $request->has('status') ? 'active' : 'non-active';
+            $customer->save();
+            $statusMessage = $customer->status == 'active' ? 'Aktif' : 'Non Aktif';
+            return redirect()->route('customer.show', $customer->user_id)->with("success", "Status konsumen diperbarui menjadi $statusMessage");
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['errors' => 'Terjadi kesalahan. Silakan coba lagi.']);
         }
     }
 }

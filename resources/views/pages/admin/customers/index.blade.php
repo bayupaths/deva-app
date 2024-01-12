@@ -55,11 +55,6 @@
                                             <td>{{ $user->phone_number }}</td>
                                             <td class="text-center">
                                                 <div class="d-flex">
-                                                    <a href="{{ route('customer.edit', $user->user_id) }}"
-                                                        class="btn btn-sm btn-success">
-                                                        <i data-feather="edit" class="feather-14" data-toggle="tooltip"
-                                                            title="Edit" data-placement="top"></i>
-                                                    </a>
                                                     <a href="{{ route('customer.show', $user->user_id) }}"
                                                         class="btn btn-sm btn-primary">
                                                         <i data-feather="info" class="feather-14" data-toggle="tooltip"
@@ -69,9 +64,9 @@
                                                         method="post">
                                                         {{ method_field('DELETE') }}
                                                         {{ csrf_field() }}
-                                                        <button type="submit" id="delete-customer"
+                                                        <button type="submit" class="delete-customer-{{ $user->user_id }}"
                                                             style="display: none"></button>
-                                                        <button type="button" onclick="return confirmDelete()"
+                                                        <button type="button" onclick="return confirmDelete({{ $user->user_id }})"
                                                             class="btn btn-sm btn-danger delete-customer">
                                                             <i data-feather="trash-2" class="feather-14"
                                                                 data-toggle="tooltip" title="Hapus"
@@ -96,7 +91,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
 
     <script>
-        function confirmDelete() {
+        function confirmDelete(id) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Hapus Konsumen',
@@ -108,7 +103,11 @@
                 cancelButtonColor: '#3085d6',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('delete-customer').click();
+                    var confirmClass = 'delete-customer-' + id;
+                    var deleteButton = document.querySelector('.' + confirmClass);
+                    if (deleteButton) {
+                        deleteButton.click();
+                    }
                 } else {
                     Swal.fire(
                         'Dibatalkan',

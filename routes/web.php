@@ -50,6 +50,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::resource('/product', App\Http\Controllers\Admin\ProductController::class);
         Route::post('/products/gallery/upload', [App\Http\Controllers\Admin\ProductGalleryController::class, 'uploadGallery'])->name('product.gallery.upload');
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
+        Route::patch('/customer/{id}/update_status',  [App\Http\Controllers\Admin\CustomerController::class, 'update_status'])->name('update.customer.status');
     });
 });
 

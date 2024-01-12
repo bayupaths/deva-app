@@ -34,7 +34,7 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 8%">ID</th>
-                                        <th style="width: 15%">Image</th>
+                                        {{-- <th style="width: 15%">Image</th> --}}
                                         <th style="width: 20%">Nama</th>
                                         <th style="width: 20%">Slug</th>
                                         <th style="width: 10%">Aksi</th>
@@ -44,10 +44,10 @@
                                     @foreach ($categories as $category)
                                         <tr>
                                             <td>{{ $category->category_id }}</td>
-                                            <td>
+                                            {{-- <td>
                                                 <img src="{{ Storage::url($category->image) }}" class="img-fluid"
                                                     style="width: 70px" alt="...">
-                                            </td>
+                                            </td> --}}
                                             <td>{{ $category->name }}</td>
                                             <td>{{ $category->slug }}</td>
                                             <td class="text-center">
@@ -61,9 +61,11 @@
                                                         method="post">
                                                         {{ method_field('DELETE') }}
                                                         {{ csrf_field() }}
-                                                        <button type="submit" id="delete-category"
+                                                        <button type="submit"
+                                                            class="delete-category-{{ $category->category_id }}"
                                                             style="display: none"></button>
-                                                        <button type="button" onclick="return confirmDelete()"
+                                                        <button type="button"
+                                                            onclick="return confirmDelete({{ $category->category_id }})"
                                                             class="btn btn-sm btn-danger delete-category">
                                                             <i data-feather="trash-2" class="feather-14"
                                                                 data-toggle="tooltip" title="Hapus"
@@ -88,7 +90,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
 
     <script>
-        function confirmDelete() {
+        function confirmDelete(id) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Hapus Kategori Produk',
@@ -100,7 +102,11 @@
                 cancelButtonColor: '#3085d6',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('delete-category').click();
+                    var confirmClass = 'delete-category-' + id;
+                    var deleteButton = document.querySelector('.' + confirmClass);
+                    if (deleteButton) {
+                        deleteButton.click();
+                    }
                 } else {
                     Swal.fire(
                         'Dibatalkan',
