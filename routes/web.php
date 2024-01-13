@@ -24,6 +24,10 @@ Route::get('/product/category/{slug}', [App\Http\Controllers\ProductController::
 Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 'productDetail'])
     ->name('productDetail');
 
+Route::group(['middleware' => 'customerauth'], function() {
+    Route::get('/purchase_order', [App\Http\Controllers\OrderController::class, 'create'])->name('purchase.order');
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.customer');
+});
 
 /**
  * Routes for the admin panel.

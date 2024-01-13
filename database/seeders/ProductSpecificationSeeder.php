@@ -22,9 +22,10 @@ class ProductSpecificationSeeder extends Seeder
         $data = [
             [
                 'product_id' =>  3,
-                'spec_type' => 'Color',
-                'spec_value' => 'Red',
-                'unit' => 'Piece',
+                'name' => 'Warna',
+                'spec_type' => 'warna',
+                'spec_value' => 'Merah',
+                'unit' => '',
                 'description' => 'Vibrant red color'
             ],
             [

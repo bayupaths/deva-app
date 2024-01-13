@@ -47,15 +47,14 @@
                 @auth
                     <ul class="navbar-nav d-none d-lg-flex">
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link" id="navbarDropdown" role="button" data-toggle="dropdown">
-                                Hi, {{ Auth::user()->name }}
+                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ Auth::user()->images != null ? Storage::url(Auth::user()->images) : '/assets/images/profile/default-user-icon.png' }}"
                                     alt="Profile Picture" class="rounded-circle mr-2 profile-picture" width="45" />
+                               {{ Auth::user()->name }}
                             </a>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">History</a>
-                                <a href="#" class="dropdown-item">Settings</a>
-                                <div class="dropdown-driver"></div>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a href="{{ route('profile.customer') }}" class="dropdown-item">Profile</a>
+                                <hr class="dropdown-divider">
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                               document.getElementById('logout-form').submit();"
@@ -70,7 +69,7 @@
                     <!-- Mobile Menu -->
                     <ul class="navbar-nav d-block d-lg-none">
                         <li class="nav-item">
-                            <a href="" class="nav-link"> Hi, {{ Auth::user()->name }} </a>
+                            <a href="" class="nav-link">{{ Auth::user()->name }} </a>
                         </li>
                     </ul>
                 @endauth

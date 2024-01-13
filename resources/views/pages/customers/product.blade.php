@@ -64,7 +64,7 @@
                                 </div>
                             @empty
                                 <div class="text-center py-5" data-aos="fade-up" data-aos-delay="100">
-                                    Produk Tidak Ditemukan
+                                    Produk Tidak Tersedia
                                 </div>
                             @endforelse
                         </div>

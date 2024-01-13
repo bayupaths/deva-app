@@ -10,6 +10,7 @@
 @import "utilities/variables";
 @import "utilities/fonts";
 @import "utilities/global";
+@import "admin/1-variables/app";
 
 // component
 @import "components/breadcrumbs";
@@ -22,3 +23,4 @@
 @import "pages/auth";
 @import "pages/product";
 @import "pages/details";
+@import "pages/profile";

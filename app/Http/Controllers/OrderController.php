@@ -12,9 +12,10 @@ class OrderController extends Controller
 {
     public function create(Request $request)
     {
-        $product = Product::with([
-            'productCategory', 'productGallery', 'productSpecification'
-        ])->where('slug', $request->product)->firstOrFail();
+        // dd($request);
+        // $product = Product::with([
+        //     'productCategory', 'productGallery', 'productSpecification'
+        // ])->where('slug', $request->product)->firstOrFail();
 
         return view('pages.customers.order');
     }

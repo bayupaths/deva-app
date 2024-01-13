@@ -72,7 +72,8 @@
                         <h3 class="product-title">{{ $product->name }}</h3>
                         <h5 class="product-category">Kategori : {{ $product->productCategory->name }}</h5>
                         <h5 class="product-price">Harga : <span>RP. {{ number_format($product->price) }}</span></h5>
-                        <form action="" method="post">
+                        <form action="{{ route('purchase.order') }}" method="GET">
+                            @csrf
                             <div class="product-specification">
                                 <h5>Spesifikasi Produk</h5>
                                 @foreach ($product->productSpecification->groupBy('spec_type') as $specType => $specifications)
@@ -93,7 +94,7 @@
                                     <a href="{{ route('login') }}" class="btn btn-md btn-order">Login Untuk Buat Pesanan</a>
                                 @endguest
                                 @auth
-                                    <button class="btn btn-md btn-order" type="button">Buat Pesanan</button>
+                                    <button class="btn btn-md btn-order" type="submit">Buat Pesanan</button>
                                 @endauth
                             </div>
                         </form>
