@@ -5,7 +5,7 @@
 
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align">
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
                     <div class="position-relative">
                         <i class="align-middle" data-feather="bell"></i>
@@ -147,7 +147,7 @@
                         <a href="#" class="text-muted">Show all messages</a>
                     </div>
                 </div>
-            </li>
+            </li> --}}
             <li class="nav-item dropdown">
                 <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
                     data-bs-toggle="dropdown">
@@ -161,10 +161,10 @@
                     <span class="text-dark">{{ Auth::guard('admin')->user()->name }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="pages-profile.html">
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
                         <i class="align-middle me-1" data-feather="user"></i> Profile
                     </a>
-                    <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
+                    <a class="dropdown-item" href="{{ route('admin.setting') }}"><i class="align-middle me-1"
                             data-feather="settings"></i> Pengaturan</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" id="logout" href="{{ route('admin-logout') }}"

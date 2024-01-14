@@ -131,21 +131,7 @@
                                 <h5 class="mb-1">Foto Produk</h5>
                                 <input type="file" class="form-control form-control-lg">
                             </div>
-                            <p>Tambah foto galeri produk</p>
-                            <div class="dropzone form-group border-dashed rounded-2" id="myAwesomeDropzone">
-                                <div class="fallback">
-                                    <input type="hidden" name="images" value="images" id="images" multiple />
-                                    <div class="dz-default dz-message">
-                                        <span><i class="fa fa-cloud-upload"></i>
-                                            <br>Drop files here to upload
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="preview-container mt-3">
-                                <div id="preview-template" style="display: none;">
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>

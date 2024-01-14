@@ -27,8 +27,8 @@
                     <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Transaksi</span>
                 </a>
             </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-profile.html">
+            <li class="sidebar-item {{ request()->is('admin/reports*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('admin.report') }}">
                     <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Laporan</span>
                 </a>
             </li>
@@ -61,14 +61,14 @@
                 Pengaturan
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="charts-chartjs.html">
+            <li class="sidebar-item {{ request()->is('admin/data_admin*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('data_admin.index') }}">
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Akun Admin</span>
                 </a>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="maps-google.html">
+            <li class="sidebar-item {{ request()->is('admin/settings*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('admin.setting') }}">
                     <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Sistem</span>
                 </a>
             </li>

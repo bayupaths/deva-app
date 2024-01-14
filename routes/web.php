@@ -27,7 +27,7 @@ Route::get('/product/category/{slug}', [App\Http\Controllers\ProductController::
 Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 'productDetail'])
     ->name('productDetail');
 
-Route::group(['middleware' => 'customerauth'], function() {
+Route::group(['middleware' => 'customerauth'], function () {
     Route::get('/purchase_order', [App\Http\Controllers\OrderController::class, 'create'])->name('purchase.order');
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.customer');
 });
@@ -47,19 +47,32 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'adminauth:ADMIN'], function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard-admin');
+        // route orders
         Route::group(['prefix' => 'orders'], function () {
             Route::get('/', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders');
             Route::get('/{status}/status', [App\Http\Controllers\Admin\OrderController::class, 'status_order'])->name('admin.orders.status');
             Route::get('/{code}/details', [App\Http\Controllers\Admin\OrderController::class, 'order_detail'])->name('admin.order.details');
         });
+        // route invoice
         Route::get('/transaction', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transaction');
+        Route::get('/reports', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('admin.report');
+
+
+        // route master data
         Route::resource('/category', App\Http\Controllers\Admin\CategoryController::class);
         Route::resource('/product', App\Http\Controllers\Admin\ProductController::class);
         Route::get('/products/{id}/galleries', [App\Http\Controllers\Admin\ProductGalleryController::class, 'index'])->name('product.galleries');
         Route::post('/products/galleries_upload', [App\Http\Controllers\Admin\ProductGalleryController::class, 'upload'])->name('galleries.upload');
         Route::post('/products/galleries_store', [App\Http\Controllers\Admin\ProductGalleryController::class, 'store'])->name('galleries.store');
+        Route::get('/products/{id}/specifications', [App\Http\Controllers\Admin\ProductSpecificationController::class, 'index'])->name('product.specs');
+
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
         Route::patch('/customer/{id}/update_status',  [App\Http\Controllers\Admin\CustomerController::class, 'update_status'])->name('update.customer.status');
+        Route::resource('/data_admin', App\Http\Controllers\Admin\AdminController::class);
+
+        // route profile and settings
+        Route::get('/profile', [App\Http\Controllers\Admin\AdminController::class, 'profile'])->name('admin.profile');
+        Route::get('/settings', [App\Http\Controllers\Admin\AdminController::class, 'settings'])->name('admin.setting');
     });
 });
 

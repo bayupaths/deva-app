@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Deva Digital Print
+    Dashboard Admin Deva Digital Print | Pusat Stempel Express
 @endsection
 
 @push('addon-style')

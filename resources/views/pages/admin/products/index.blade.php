@@ -51,40 +51,33 @@
                                             <td>Rp. {{ number_format($product->price) }}</td>
                                             <td>{{ $product->stock }}</td>
                                             <td class="text-center">
-                                                {{-- <div class="d-flex">
-                                                <a href="{{ route('product.edit', $product->slug) }}"
-                                                    class="btn btn-sm btn-success">
-                                                    <i data-feather="edit" class="feather-14" data-toggle="tooltip"
-                                                        title="Edit" data-placement="top"></i>
-                                                </a>
-                                                <form action="{{ route('product.destroy', $product->product_id) }}"
-                                                    method="post">
-                                                    {{ method_field('DELETE') }}
-                                                    {{ csrf_field() }}
-                                                    <button type="submit" id="delete-category"
-                                                        style="display: none"></button>
-                                                    <button type="button" onclick="return confirmDelete()"
-                                                        class="btn btn-sm btn-danger delete-category">
-                                                        <i data-feather="trash-2" class="feather-14"
-                                                            data-toggle="tooltip" title="Hapus"
-                                                            data-placement="top"></i>
-                                                    </button>
-                                                </form>
-                                            </div> --}}
                                                 <div class="btn-group">
-                                                    <a href="#" class="btn btn-primary">Detail</a>
+                                                    <a href="{{ route('product.show', $product->product_id) }}" class="btn btn-primary">Detail</a>
                                                     <button type="button"
                                                         class="btn btn-primary dropdown-toggle dropdown-toggle-split"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="visually-hidden">Toggle Dropdown</span>
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="{{ route('product.galleries', $product->product_id) }}">Galeri</a></li>
-                                                        <li><a class="dropdown-item" href="#">Spesifikasi</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('product.galleries', $product->product_id) }}">Galeri</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="{{ route('product.specs', $product->product_id) }}">Spesifikasi</a></li>
                                                         <li>
                                                             <hr class="dropdown-divider">
                                                         </li>
-                                                        <li><a class="dropdown-item" href="#">Hapus Produk</a></li>
+                                                        <form action="{{ route('product.destroy', $product->product_id) }}"
+                                                            method="post">
+                                                            {{ method_field('DELETE') }}
+                                                            {{ csrf_field() }}
+                                                            <button type="submit" id="delete-product-{{ $product->product_id }}"
+                                                                style="display: none"></button>
+                                                            <li><a class="dropdown-item delete-product"
+                                                                    onclick="return confirmDelete({{ $product->product_id }})" href="#">
+                                                                    Hapus Produk
+                                                                </a>
+                                                            </li>
+                                                        </form>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -104,7 +97,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
 
     <script>
-        function confirmDelete() {
+        function confirmDelete(id) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Hapus Produk',
@@ -116,7 +109,11 @@
                 cancelButtonColor: '#3085d6',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('delete-category').click();
+                    var confirmClass = 'delete-product-' + id;
+                    var deleteButton = document.querySelector('.' + confirmClass);
+                    if (deleteButton) {
+                        deleteButton.click();
+                    }
                 } else {
                     Swal.fire(
                         'Dibatalkan',
