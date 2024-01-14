@@ -9,49 +9,49 @@
 @endpush
 
 @section('content')
-<div class="container-fluid p-0">
-    <h1 class="h3 mb-3">Produk</h1>
-    <nav aria-label="breadcrumb" class="mt-2">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard-admin') }}" class="text-decoration-none">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Produk</li>
-        </ol>
-    </nav>
+    <div class="container-fluid p-0">
+        <h1 class="h3 mb-3">Produk</h1>
+        <nav aria-label="breadcrumb" class="mt-2">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('dashboard-admin') }}" class="text-decoration-none">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Produk</li>
+            </ol>
+        </nav>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex">
-                    <h5 class="card-title mb-0 flex-grow-1">Tabel Produk</h5>
-                    <a href="{{ route('product.create') }}" class="btn btn-primary mb-0">
-                        + Tambah Produk Baru
-                    </a>
-                </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex">
+                        <h5 class="card-title mb-0 flex-grow-1">Tabel Produk</h5>
+                        <a href="{{ route('product.create') }}" class="btn btn-primary mb-0">
+                            + Tambah Produk Baru
+                        </a>
+                    </div>
 
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="categories-table" class="table table-striped table-borderless" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 8%">ID</th>
-                                    <th style="width: 15%">Nama</th>
-                                    <th style="width: 20%">Kategori</th>
-                                    <th style="width: 20%">Harga</th>
-                                    <th style="width: 20%">Stok</th>
-                                    <th style="width: 10%">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($products as $product)
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="categories-table" class="table table-striped table-borderless" style="width: 100%;">
+                                <thead>
                                     <tr>
-                                        <td>{{ $product->product_id }}</td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->productCategory->name }}</td>
-                                        <td>Rp. {{ number_format($product->price) }}</td>
-                                        <td>{{ $product->stock }}</td>
-                                        <td class="text-center">
-                                            <div class="d-flex">
+                                        <th style="width: 8%">ID</th>
+                                        <th style="width: 15%">Nama</th>
+                                        <th style="width: 20%">Kategori</th>
+                                        <th style="width: 20%">Harga</th>
+                                        <th style="width: 20%">Stok</th>
+                                        <th style="width: 10%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($products as $product)
+                                        <tr>
+                                            <td>{{ $product->product_id }}</td>
+                                            <td>{{ $product->name }}</td>
+                                            <td>{{ $product->productCategory->name }}</td>
+                                            <td>Rp. {{ number_format($product->price) }}</td>
+                                            <td>{{ $product->stock }}</td>
+                                            <td class="text-center">
+                                                {{-- <div class="d-flex">
                                                 <a href="{{ route('product.edit', $product->slug) }}"
                                                     class="btn btn-sm btn-success">
                                                     <i data-feather="edit" class="feather-14" data-toggle="tooltip"
@@ -70,18 +70,34 @@
                                                             data-placement="top"></i>
                                                     </button>
                                                 </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                            </div> --}}
+                                                <div class="btn-group">
+                                                    <a href="#" class="btn btn-primary">Detail</a>
+                                                    <button type="button"
+                                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="{{ route('product.galleries', $product->product_id) }}">Galeri</a></li>
+                                                        <li><a class="dropdown-item" href="#">Spesifikasi</a></li>
+                                                        <li>
+                                                            <hr class="dropdown-divider">
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="#">Hapus Produk</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('addon-script')

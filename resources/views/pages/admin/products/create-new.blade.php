@@ -24,7 +24,7 @@
                     <li class="breadcrumb-item active" aria-current="page">Tambah Produk</li>
                 </ol>
             </nav>
-            <form action="{{ route('product.store') }}" method="post" id="form-product" enctype="multipart/form-data">
+            <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-lg-8 col-12">
@@ -51,30 +51,6 @@
                                             <strong>{{ $message }}</strong>
                                         </div>
                                     @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="mb-4">
-                                    <h4 class="mb-4 fw-bold">Galeri Produk</h4>
-                                    <h5 class="mb-1">Foto Produk</h5>
-                                    <input type="file" class="form-control form-control-lg">
-                                </div>
-                                <p>Tambah foto galeri produk</p>
-                                <div class="dropzone form-group border-dashed rounded-2" id="myAwesomeDropzone">
-                                    <div class="fallback">
-                                        <input type="hidden" name="images" value="images" id="images" multiple />
-                                        <div class="dz-default dz-message">
-                                            <span><i class="fa fa-cloud-upload"></i>
-                                                <br>Drop files here to upload
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="preview-container mt-3">
-                                    <div id="preview-template" style="display: none;">
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -145,6 +121,44 @@
                     </div>
                 </div>
             </form>
+
+            <div class="row">
+                <div class="col-lg-8 lg-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h4 class="mb-4 fw-bold"> Produk</h4>
+                                <h5 class="mb-1">Foto Produk</h5>
+                                <input type="file" class="form-control form-control-lg">
+                            </div>
+                            <p>Tambah foto galeri produk</p>
+                            <div class="dropzone form-group border-dashed rounded-2" id="myAwesomeDropzone">
+                                <div class="fallback">
+                                    <input type="hidden" name="images" value="images" id="images" multiple />
+                                    <div class="dz-default dz-message">
+                                        <span><i class="fa fa-cloud-upload"></i>
+                                            <br>Drop files here to upload
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="preview-container mt-3">
+                                <div id="preview-template" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h4 class="mb-4 fw-bold">Spesifikasi Produk</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
@@ -226,3 +240,4 @@
         });
     </script>
 @endpush
+

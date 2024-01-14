@@ -154,7 +154,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <a href="#!" class="btn btn-sm custom-btn">Selengkapnya</a>
+                    <a href="{{ route('product-page') }}" class="btn btn-sm custom-btn">Selengkapnya</a>
                 </div>
             </div>
         </section>
@@ -169,7 +169,7 @@
                         <p>Cetak Berkualitas, Hemat Waktu. Pilih Solusi Percetakan Digital Terbaik!</p>
                     </div>
                     <div class="col-lg-3 cta-btn-container text-center">
-                        <a class="cta-btn align-middle text-decoration-none" href="#">Mulai Sekarang</a>
+                        <a class="cta-btn align-middle text-decoration-none" href="{{ route('login') }}">Mulai Sekarang</a>
                     </div>
                 </div>
             </div>

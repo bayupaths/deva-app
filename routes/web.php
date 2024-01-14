@@ -18,6 +18,9 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/how_to_order', [App\Http\Controllers\HomeController::class, 'howToOrder'])->name('how-order-page');
+Route::get('/about', [App\Http\Controllers\HomeController::class, 'about'])->name('about-page');
+Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact-page');
 Route::get('/product', [App\Http\Controllers\ProductController::class, 'index'])->name('product-page');
 Route::get('/product/category/{slug}', [App\Http\Controllers\ProductController::class, 'productsByCategory'])
     ->name('productsByCategory');
@@ -52,7 +55,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/transaction', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transaction');
         Route::resource('/category', App\Http\Controllers\Admin\CategoryController::class);
         Route::resource('/product', App\Http\Controllers\Admin\ProductController::class);
-        Route::post('/products/gallery/upload', [App\Http\Controllers\Admin\ProductGalleryController::class, 'uploadGallery'])->name('product.gallery.upload');
+        Route::get('/products/{id}/galleries', [App\Http\Controllers\Admin\ProductGalleryController::class, 'index'])->name('product.galleries');
+        Route::post('/products/galleries_upload', [App\Http\Controllers\Admin\ProductGalleryController::class, 'upload'])->name('galleries.upload');
+        Route::post('/products/galleries_store', [App\Http\Controllers\Admin\ProductGalleryController::class, 'store'])->name('galleries.store');
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
         Route::patch('/customer/{id}/update_status',  [App\Http\Controllers\Admin\CustomerController::class, 'update_status'])->name('update.customer.status');
     });

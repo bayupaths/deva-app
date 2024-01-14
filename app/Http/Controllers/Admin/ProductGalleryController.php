@@ -4,38 +4,57 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Models\ProductGallery;
 
 class ProductGalleryController extends Controller
 {
-    /**
-     * uploadGallery
-     *
-     * @param  mixed $request
-     * @return void
-     */
-    public function uploadGallery(Request $request)
+
+    public function index($id)
     {
-        $request->validate([
-            'images.*' => 'required|file|mimes:jpeg,jpg,png,gif|max:2048', // Adjust validation rules as needed
+        $product = Product::with(['productGallery', 'productCategory'])->findOr($id);
+        return view('pages.admin.products.product-galleries', [
+            'product' => $product
         ]);
+    }
 
-        $productId = 1;
+    public function store(Request $request)
+    {
+        $product_id = $request->input('product_id');
+        $fileName = $request->input('file_name');
+        $fileType = $request->input('file_type');
+        $fileSize = $request->input('file_size');
+        $filePath = $request->input('file_path');
 
-        $files = $request->file('file');
-        foreach ($files as $file) {
-            $path = $file->store('assets/images/product_galleries', 'public');
-            // Save to ProductGallery model
+        foreach($fileName as $index => $file) {
             ProductGallery::create([
-                'product_id' => $productId,
-                'file_name' => $file->getClientOriginalName(),  // Get original file name
-                'file_type' => $file->getClientMimeType(),      // Get file type
-                'file_size' => $file->getSize(),                // Get file size in bytes
-                'file_path' => $path,
-                // Add any other fields as needed
+                'product_id' => $product_id,
+                'file_name' => $file,
+                'file_type' => $fileType[$index],
+                'file_size' => $fileSize[$index],
+                'file_path' => $filePath[$index],
             ]);
         }
 
-        return response()->json(['success' => true]);
+        return redirect()->route('product.galleries', $product_id);
+
+    }
+
+    public function upload(Request $request)
+    {
+        $file = $request->file('file');
+        $file_name = $file->getClientOriginalName();
+        $file_type = $file->getClientOriginalExtension();
+        $file_size = $file->getSize() / 1024; // in KB
+        $file_path = $file->store('assets/images/product_galleries', 'public');
+
+        return response()->json([
+            'file_name' => $file_name,
+            'file_type' => $file_type,
+            'file_size' => $file_size,
+            'file_path' => $file_path,
+            // 'upload' => $upload,
+            'status' => true
+        ]);
     }
 }

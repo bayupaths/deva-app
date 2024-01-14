@@ -27,7 +27,7 @@
     "src": "resources/js/admin/main.js"
   },
   "resources/js/app.css": {
-    "file": "assets/app-e77afbb6.css",
+    "file": "assets/app-32d1e938.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
@@ -35,9 +35,9 @@
       "assets/about-image-b77dd08a.png"
     ],
     "css": [
-      "assets/app-e77afbb6.css"
+      "assets/app-32d1e938.css"
     ],
-    "file": "assets/app-af7dfe31.js",
+    "file": "assets/app-64034fcf.js",
     "imports": [
       "__commonjsHelpers-6e887a1c.js"
     ],
@@ -49,7 +49,7 @@
     "src": "resources/js/admin/main.css"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-e77afbb6.css",
+    "file": "assets/app-32d1e938.css",
     "src": "resources/js/app.css"
   }
 }
