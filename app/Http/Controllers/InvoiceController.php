@@ -60,7 +60,7 @@ class InvoiceController extends Controller
             'invoice' => $invoice,
             'items' => $items,
         ];
-        $nameFileDocuments = $invoice->invoice_number . '.pdf';
+        $nameFileDocuments = 'INVOICE#' . $invoice->invoice_number . '.pdf';
 
         // Generate PDF
         $document = PDF::loadView('pdf.invoice', $data);

@@ -29,6 +29,16 @@ class PaymentController extends Controller
         Config::$isSanitized = config('services.midtrans.isSanitized');
         Config::$is3ds = config('services.midtrans.id3ds');
 
+        // produk
+        $product = [
+            'id' => $item->products->uuid,
+            'price' => (int)$item->product_price,
+            'quantity' => $item->product_quantity,
+            'name' => $item->products->name,
+            'category' => $item->products->categories->name,
+            'type' => 'physical',
+        ];
+
         // create array send to midtrans
         $midtrans = [
             'transaction_details' => [
@@ -40,13 +50,7 @@ class PaymentController extends Controller
                 'email' => $invoice->orders->users->email,
                 'phone' => $invoice->orders->users->phone_number,
             ],
-            'item_details' => [
-                'id' => $item->products->uuid,
-                'price' => (int)$item->product_price,
-                'quantity' => $item->product_quantity,
-                'name' => $item->products->name,
-                'category' => $item->products->categories->name
-            ],
+            'item_details' => array($product),
             'enabled_payments' => [
                 'gopay', 'indomaret', 'bank_transfer'
             ],
@@ -64,7 +68,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function callback($code)
+    public function callback(Request $request)
     {
         // Set konfigurasi midtrans
         Config::$serverKey = config('services.midtrans.serverKey');
@@ -117,7 +121,7 @@ class PaymentController extends Controller
             if ($type == 'bank_transfer') {
                 $paymentType = $notification->payment_type . " (" . $notification->va_numbers[1]['va'] . ")";
                 $transactionRef = $notification->va_numbers[0]['va_number'] ?? null;
-            } else if($type == 'cstore') {
+            } else if ($type == 'cstore') {
                 $paymentType = $notification->store;
                 $transactionRef = $notification->payment_code;
             } else {

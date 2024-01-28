@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Detail Order {{ $item->orders->order_code }} - Deva Digital Print Pusat Stempel Express
+@endsection
+
 @section('content')
     <div class="page-order">
         <section class="store-breadcrumbs" data-aos="fade-down" data-aos-delay="100">
@@ -12,9 +16,9 @@
                                     <a href="{{ route('home') }}">Home</a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="{{ route('product-page') }}">Produk</a>
+                                    <a href="{{ route('order.history') }}">Order</a>
                                 </li>
-                                <li class="breadcrumb-item active">Order</li>
+                                <li class="breadcrumb-item active">Detail Order</li>
                             </ol>
                         </nav>
                     </div>
@@ -141,28 +145,42 @@
                                 </li>
                             </ul>
                         </div>
-                        <form action="{{ route('invoice.store') }}" method="post">
-                            @csrf
-                            <input type="hidden" name="order_id" value="{{ $item->orders->id }}">
-                            <input type="hidden" name="total_amount" value="{{ $item->orders->total_price }}">
+
+                        @if (empty($item->orders->invoices))
+                            <form action="{{ route('invoice.store') }}" method="post">
+                                @csrf
+                                <input type="hidden" name="order_id" value="{{ $item->orders->id }}">
+                                <input type="hidden" name="total_amount" value="{{ $item->orders->total_price }}">
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="paymentMethod">Metode Bayar</label>
+                                    <select class="form-select @error('payment_method') is-invalid  @enderror"
+                                        id="paymentMethod" name="payment_method">
+                                        <option value="" disabled selected>Pilih</option>
+                                        <option value="cash">Cash</option>
+                                        <option value="transfer">Transfer</option>
+                                    </select>
+                                    @error('payment_method')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-md btn-success" type="submit">Bayar</button>
+                                </div>
+                            </form>
+                        @elseif($item->orders->invoices)
                             <div class="input-group mb-3">
                                 <label class="input-group-text" for="paymentMethod">Metode Bayar</label>
-                                <select class="form-select @error('payment_method') is-invalid  @enderror"
-                                    id="paymentMethod" name="payment_method">
-                                    <option value="" disabled selected>Pilih</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="transfer">Transfer</option>
+                                <select class="form-select" id="paymentMethod" name="payment_method" disabled>
+                                    <option selected value="{{ $item->orders->invoices->payment_method }}">
+                                        {{ $item->orders->invoices->payment_method }}</option>
                                 </select>
-                                @error('payment_method')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button class="btn btn-md btn-primary" type="submit">Bayar</button>
+                                <a class="btn btn-md btn-outline-primary" href="{{ route('invoice.show', $item->orders->invoices->invoice_number) }}">Invoice</a>
                             </div>
-                        </form>
+                        @endif
                     </div>
                 </div>
             </div>

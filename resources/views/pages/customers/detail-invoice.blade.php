@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Deva Digital Print - Detail Invoice#{{ $invoice->invoice_number }}
+@endsection
+
 @section('content')
     <div class="page-profile">
         <section class="store-breadcrumbs" data-aos="fade-down" data-aos-delay="100">
@@ -31,7 +35,7 @@
                                 <img src="/assets/images/deva-logo.png" alt="" width="250">
                             </div>
                             <div class="col-md-6 text-md-end">
-                                <strong>Invoice: #{{ $invoice->invoice_number }}</strong>
+                                <strong>Invoice#{{ $invoice->invoice_number }}</strong>
                                 <div class="text-muted">Creation Date : {{ $invoice->invoice_date }} </div>
                                 <div class="text-muted">Due Date : {{ $invoice->due_date ?? '-' }} </div>
                                 <div class="text-muted">Status :

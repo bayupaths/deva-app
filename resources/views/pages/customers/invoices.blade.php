@@ -24,13 +24,13 @@
                 <div class="row">
                     <div class="col-md-4 col-xl-3">
                         <ul class="list-group">
-                            <a href="">
+                            <a href="{{ route('order.history') }}">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Riwayat Order
                                     <span class="badge bg-primary rounded-pill">{{ $orders }}</span>
                                 </li>
                             </a>
-                            <a href="">
+                            <a href="{{ route('order.invoice') }}">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Invoice
                                     <span class="badge bg-primary rounded-pill">{{ count($invoices) }}</span>

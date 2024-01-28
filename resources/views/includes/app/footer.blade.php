@@ -44,16 +44,16 @@
                  <hr class="mb-4 mt-0 d-inline-block mx-auto"
                      style="width: 60px; background-color: #7c4dff; height: 2px" />
                  <p>
-                     <a href="#!" class="text-white">Your Account</a>
+                     <a href="{{ route('product-page') }}" class="text-white">Produk</a>
                  </p>
                  <p>
-                     <a href="#!" class="text-white">Become an Affiliate</a>
+                     <a href="{{ route('how-order-page') }}" class="text-white">Cara Order</a>
                  </p>
                  <p>
-                     <a href="#!" class="text-white">Shipping Rates</a>
+                     <a href="{{ route('about-page') }}" class="text-white">Tentang Kami</a>
                  </p>
                  <p>
-                     <a href="#!" class="text-white">Help</a>
+                     <a href="{{ route('contact-page') }}" class="text-white">Kontak Kami</a>
                  </p>
              </div>
              <!-- Grid column -->

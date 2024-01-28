@@ -54,7 +54,13 @@ class Order extends Model
         parent::boot();
 
         static::creating(function ($order) {
-            $order->order_code = 'DEVA' . now()->format('YmdHis') . static::generateOrderNumber();
+            // generate unique code with date
+            $year = substr(date('Y'), -2);
+            $month = date('m');
+            $day = date('d');
+            $dateNumber = $year . $month . $day;
+
+            $order->order_code = 'DEVA-' . $dateNumber . static::generateOrderNumber();
             $order->order_number = $order->generateOrderNumber();
             $order->order_date = now();
             $order->order_status = 'PENDING';
@@ -76,16 +82,16 @@ class Order extends Model
 
         if ($lastOrder) {
             $lastOrderNumber = $lastOrder->order_number;
-            $newNumber = str_pad((int)$lastOrderNumber + 1, 4, '0', STR_PAD_LEFT);
+            $newNumber = str_pad((int)$lastOrderNumber + 1, 3, '0', STR_PAD_LEFT);
 
             // Check if the new order number already exists
             while (static::where('order_number', $newNumber)->exists()) {
-                $newNumber = str_pad((int)$newNumber + 1, 4, '0', STR_PAD_LEFT);
+                $newNumber = str_pad((int)$newNumber + 1, 3, '0', STR_PAD_LEFT);
             }
 
             return $newNumber;
         } else {
-            return '0001';
+            return '001';
         }
     }
 

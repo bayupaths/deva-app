@@ -49,14 +49,25 @@ class Invoice extends Model
 
     private static function generateInvoiceNumber()
     {
-        $year = date('Y');
+        $year = substr(date('Y'), -2);
         $month = date('m');
+        $day = date('d');
 
-        $count = static::whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->count() + 1;
+        $lastInvoice = self::latest()->first();
 
-        $invoiceNumber = sprintf('%s%s%04d', 'INV', now()->format('YmdHis'), $count);
+        if ($lastInvoice) {
+            // Jika sudah ada invoice sebelumnya
+            $lastInvoiceNumber = $lastInvoice->invoice_number;
+
+            // Ambil urutan nomor dari invoice terakhir dan tambahkan 1
+            $nextNumber = (int)substr($lastInvoiceNumber, -3) + 1;
+        } else {
+            // Jika ini invoice pertama
+            $nextNumber = 1;
+        }
+
+        $invoiceNumber = $year . $month . $day . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
         return $invoiceNumber;
     }
 

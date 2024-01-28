@@ -94,8 +94,6 @@ Route::group(['prefix' => 'admin'], function () {
         });
 
 
-
-
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
         Route::patch('/customer/{id}/update_status',  [App\Http\Controllers\Admin\CustomerController::class, 'update_status'])->name('update.customer.status');
         Route::resource('/data_admin', App\Http\Controllers\Admin\AdminController::class);
@@ -104,22 +102,4 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/profile', [App\Http\Controllers\Admin\AdminController::class, 'profile'])->name('admin.profile');
         Route::get('/settings', [App\Http\Controllers\Admin\AdminController::class, 'settings'])->name('admin.setting');
     });
-});
-
-Route::get('/invoice', function () {
-    return view('pages.customers.success');
-});
-Route::get('/payments', function () {
-    $order = \App\Models\OrderDetail::with(['order.user', 'product.productGallery', 'order.payment', 'orderDetailImage'])
-            ->whereHas('order', function ($query)  {
-                $query->where('order_code', 'DEVA202401250001');
-            })
-            ->firstOrFail();
-    return view('pages.customers.payments', [
-        'order' => $order
-    ]);
-});
-
-Route::get('/invoice', function() {
-    return view('pages.customers.invoice-new');
 });

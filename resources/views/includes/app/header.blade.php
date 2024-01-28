@@ -61,6 +61,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a href="{{ route('profile.customer') }}" class="dropdown-item">Profile</a>
+                                <a href="{{ route('order.history') }}" class="dropdown-item">History Order</a>
                                 <hr class="dropdown-divider">
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
