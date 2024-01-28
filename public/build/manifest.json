@@ -12,14 +12,14 @@
     "src": "resources/css/app.css"
   },
   "resources/js/admin/main.css": {
-    "file": "assets/main-4a0b229f.css",
+    "file": "assets/main-40496492.css",
     "src": "resources/js/admin/main.css"
   },
   "resources/js/admin/main.js": {
     "css": [
-      "assets/main-4a0b229f.css"
+      "assets/main-40496492.css"
     ],
-    "file": "assets/main-3bc3814f.js",
+    "file": "assets/main-83b42d62.js",
     "imports": [
       "__commonjsHelpers-6e887a1c.js"
     ],
@@ -45,7 +45,7 @@
     "src": "resources/js/app.js"
   },
   "resources/sass/admin/main.scss": {
-    "file": "assets/main-4a0b229f.css",
+    "file": "assets/main-40496492.css",
     "src": "resources/js/admin/main.css"
   },
   "resources/sass/app.scss": {
