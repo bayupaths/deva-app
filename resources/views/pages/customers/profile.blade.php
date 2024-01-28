@@ -23,58 +23,20 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 col-xl-3">
-                        <div class="card mb-3 card-profile">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Profile</h5>
-                            </div>
-                            <div class="card-body text-center">
-                                <img src="{{ $customer->photos ? Storage::url($customer->photos) : url('/assets/images/profile/default-user-icon.png') }}"
-                                    alt="{{ $customer->name }}" class="img-fluid rounded-circle mb-2" width="128"
-                                    height="128" />
-                                <h5 class="card-title mb-0">{{ $customer->name }}</h5>
-                            </div>
-                            <hr class="my-0" />
-                            <div class="card-body">
-                                <h5 class="h6 card-title">Menu</h5>
-                                <ul class="list-unstyled list-menu mb-0">
-                                    <li class="menu-item mb-1">
-                                        <a class="menu-link" href="#">
-                                           Riwayat Order
-                                           <span class="badge bg-success">3</span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item mb-1">
-                                        <a class="menu-link" href="#">
-                                           Invoice
-                                           <span class="badge bg-success">3</span>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item mb-1">
-                                        <a class="menu-link" href="#">
-                                            Pengaturan Profile
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <hr class="my-0" />
-                            <div class="card-body">
-                                <h5 class="h6 card-title">Informasi Konsumen</h5>
-                                <ul class="list-unstyled list-menu  mb-0">
-                                    <li class="mb-1 menu-item">
-                                        <span data-feather="mail" class="feather-sm me-1"></span> Email
-                                        <a href="mailto:{{ $customer->email }}">{{ $customer->email }}</a>
-                                    </li>
-                                    <li class="mb-1 menu-item">
-                                        <span data-feather="phone" class="feather-sm me-1"></span> Telepon
-                                        {{ $customer->phone_number }}
-                                    </li>
-                                    <li class="mb-1 menu-item">
-                                        <span data-feather="home" class="feather-sm me-1"></span> Alamat
-                                        {{ $customer->address ?? '-' }}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        <ul class="list-group">
+                            <a href="">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Riwayat Order
+                                    <span class="badge bg-primary rounded-pill">{{ $countOrders }}</span>
+                                </li>
+                            </a>
+                            <a href="">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Invoice
+                                    <span class="badge bg-primary rounded-pill">{{ $countInvoice }}</span>
+                                </li>
+                            </a>
+                        </ul>
                     </div>
 
                     <div class="col-md-8 col-xl-9">
@@ -84,7 +46,8 @@
                             </div>
                             <div class="card-body h-100">
                                 <div class="table-responsive">
-                                    <table id="history-order-table" class="table table-hover my-0" style="width: 100%;">
+                                    <table id="history-order-table" class="table table-sm table-hover my-0"
+                                        style="width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th>Order ID</th>
@@ -99,18 +62,18 @@
                                         <tbody>
                                             @forelse ($orders as $item)
                                                 <tr>
-                                                    <td>{{ $item->order->order_code }}</td>
-                                                    <td>{{ Carbon\Carbon::parse($item->order->order_date)->format('d F Y, H:i') ?? '' }}
+                                                    <td>{{ $item->orders->order_code }}</td>
+                                                    <td>{{ Carbon\Carbon::parse($item->orders->order_date)->format('d F Y') ?? '' }}
                                                     </td>
-                                                    <td>{{ $item->product->name }}</td>
+                                                    <td>{{ $item->products->name }}</td>
 
-                                                    @if ($item->order->payment)
+                                                    @if ($item->orders->invoices)
                                                         @php
-                                                            $statusColor = \App\Providers\OrderHelperProvider::getPaymentStatusColor($item->order->payment->payment_status);
+                                                            $statusColor = \App\Providers\OrderHelperProvider::getPaymentStatusColor($item->orders->invoices->payment_status);
                                                         @endphp
                                                         <td> <a href="#">
                                                                 <span
-                                                                    class="badge {{ $statusColor }}">{{ $item->order->payment->payment_status }}</span>
+                                                                    class="badge {{ $statusColor }}">{{ $item->orders->invoices->payment_status }}</span>
                                                             </a>
                                                         </td>
                                                     @else
@@ -118,17 +81,17 @@
                                                             <span class="badge bg-secondary">Unpaid</span>
                                                         </td>
                                                     @endif
-                                                    <td>Rp. {{ number_format($item->order->total_price) }}</td>
+                                                    <td>Rp. {{ number_format($item->orders->total_price) }}</td>
                                                     @php
-                                                        $statusColor = \App\Providers\OrderHelperProvider::getOrderStatusColor($item->order->order_status);
+                                                        $statusColor = \App\Providers\OrderHelperProvider::getOrderStatusColor($item->orders->order_status);
                                                     @endphp
                                                     <td>
                                                         <a href="#"><span
-                                                                class="badge {{ $statusColor }}">{{ $item->order->order_status }}
+                                                                class="badge {{ $statusColor }}">{{ $item->orders->order_status }}
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.order.details', $item->order->order_code) }}"
+                                                        <a href="{{ route('admin.order.details', $item->orders->order_code) }}"
                                                             class="btn btn-primary">
                                                             <i data-feather="chevron-right" class="feather-14"></i>
                                                         </a>

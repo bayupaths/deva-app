@@ -14,16 +14,19 @@ return new class extends Migration
     public function up()
     {
     Schema::create('product_galleries', function (Blueprint $table) {
-        $table->id('galery_id');
+        $table->id();
+        $table->uuid('uuid')->unique();
         $table->unsignedBigInteger('product_id');
         $table->string('file_name');
         $table->char('file_type', 20);
         $table->float('file_size');
         $table->string('file_path');
         $table->longText('description')->nullable();
-        $table->foreign('product_id')->references('product_id')->on('products');
         $table->softDeletes();
         $table->timestamps();
+
+        // Define foreign key
+        $table->foreign('product_id')->references('id')->on('products');
     });
 }
 

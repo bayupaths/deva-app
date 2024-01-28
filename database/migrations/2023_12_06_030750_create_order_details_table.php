@@ -14,17 +14,20 @@ return new class extends Migration
     public function up()
     {
         Schema::create('order_details', function (Blueprint $table) {
-            $table->id('order_detail_id');
+            $table->id();
+            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('order_id');
             $table->unsignedDecimal('product_price', 10, 2);
             $table->integer('product_quantity');
             $table->unsignedDecimal('subtotal', 10, 2);
             $table->longText('product_note')->nullable();
-            $table->foreign('order_id')->references('order_id')->on('orders');
-            $table->foreign('product_id')->references('product_id')->on('products');
             $table->softDeletes();
             $table->timestamps();
+
+            // Define foreign key
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

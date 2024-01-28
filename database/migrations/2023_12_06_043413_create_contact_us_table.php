@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('contact_us', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->char('phone_number', 18);
             $table->string('email_address')->unique();
             $table->longText('address');

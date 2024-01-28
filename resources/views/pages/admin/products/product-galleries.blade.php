@@ -10,97 +10,79 @@
 @endpush
 
 @section('content')
-    <div class="container-fluid p-0">
-        <h1 class="h3 mb-3">Galeri Produk</h1>
-        <nav aria-label="breadcrumb" class="mt-2">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard-admin') }}"
-                        class="text-decoration-none">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item"><a href="{{ route('product.index') }}" class="text-decoration-none">Produk</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Galeri Produk</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-12">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold" for="productName">Nama Produk</label>
-                        <input class="form-control form-control-lg" id="productName" type="text" name="name"
-                            value="{{ $product->name }}" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold" for="category">Kategori</label>
-                        <input class="form-control form-control-lg" id="category" type="text" name="name"
-                            value="{{ $product->productCategory->name }}" readonly>
+    <div class="section-content">
+        <div class="container-fluid p-0">
+            <h1 class="h3 mb-3 dashboard-title">Galeri Produk</h1>
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard-admin') }}"
+                            class="text-decoration-none">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="{{ route('product.index') }}"
+                            class="text-decoration-none">Produk</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Galeri Produk</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="productName">Nama Produk</label>
+                            <input class="form-control form-control-lg" id="productName" type="text" name="name"
+                                value="{{ $product->name }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="category">Kategori</label>
+                            <input class="form-control form-control-lg" id="category" type="text" name="name"
+                                value="{{ $product->categories->name }}" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="mb-2">
-                            <h5 class="fw-bold">Galeri Produk</h5>
-                        </div>
-                        {{-- <div class="col-12 mt-3">
-                            <form action="#"
-                                method="post" enctype="multipart/form-data">
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="mb-2">
+                                <h5 class="fw-bold">Galeri Produk</h5>
+                            </div>
+                            @forelse ($product->galleries as $gallery)
+                                <div class="col-md-4">
+                                    <div class="image-container">
+                                        <img src="{{ Storage::url($gallery->file_path ?? '') }}" alt=""
+                                            class="w-100" />
+                                        <div class="overlay"></div>
+                                        <div class="delete-icon"
+                                            onclick="deletePhoto('{{ route('galleries.delete', ['id' => $gallery->id]) }}')">
+                                            <i data-feather="trash"></i>
+                                            <span>Hapus Gambar</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="mb-2 justify-content-center">
+                                    <p class="text-center">No image available</p>
+                                </div>
+                            @endforelse
+                            <label class="form-label fw-bold" for="images">Tambah Foto Produk</label>
+                            <form action="{{ route('galleries.store') }}" method="post" enctype="multipart/form-data"
+                                id="form-upload">
                                 @csrf
-                                <input type="hidden" name="products_id" value="{{ $product->id }}">
-                                <input type="file" name="photos" id="file" style="display: none;"  onchange="form.submit()" />
-                                <button type="button" class="btn btn-secondary btn-block" onclick="thisFileUpload();">
-                                    Add Photo
-                                </button>
+                                <input type="hidden" name="product_uuid" value="{{ $product->uuid }}">
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <div class="input-data">
+                                </div>
+                                <div class="form-group">
+                                    <div class="needsclick dropzone" id="document-dropzone"></div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-2">Upload</button>
                             </form>
-                        </div> --}}
-                        @forelse ($product->productGallery as $gallery)
-                            <div class="col-md-4">
-                                <div class="gallery-container">
-                                    <img src="{{ Storage::url($gallery->file_path ?? '') }}" alt=""
-                                        class="w-100" />
-                                    <a class="delete-gallery" href="#">
-                                        <img src="/images/icon-delete.svg" alt="" />
-                                    </a>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="mb-2 justify-content-center">
-                                <p class="text-center">No image available</p>
-                            </div>
-                        @endforelse
-                        <label class="form-label fw-bold" for="images">Tambah Foto Produk</label>
-                        {{-- <form action="{{ route('galleries.store') }}" method="post" enctype="multipart/form-data"
-                            class="dropzone border-dashed rounded-2" id="document-dropzone">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->product_id }}">
-                            <div class="fallback">
-                                <input type="hidden" name="images[]" value="images" id="images" multiple />
-                                <div class="dz-default dz-message">
-                                    <span><i class="fa fa-cloud-upload"></i>
-                                        <br>Drop files here to upload
-                                    </span>
-                                </div>
-                            </div>
-                        </form> --}}
-                        <form action="{{ route('galleries.store') }}" method="post" enctype="multipart/form-data"
-                            id="form-upload">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->product_id }}">
-                            <div class="input-data">
-
-                            </div>
-                            <div class="form-group">
-                                <div class="needsclick dropzone" id="document-dropzone"></div>
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,6 +139,57 @@
             //     return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) :
             //         void 0;
             // }
+        }
+
+        function deletePhoto(routeUrl) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Hapus Foto',
+                text: 'Anda akan menghapus foto produk. Tindakan ini tidak dapat dibatalkan.',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(routeUrl, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Gagal menghapus foto.');
+                            }
+                        })
+                        .then(data => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: data.message,
+                            });
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: error.message,
+                            });
+                        });
+                } else {
+                    Swal.fire(
+                        'Dibatalkan',
+                        'Hapus data kategori produk dibatalkan.',
+                        'info'
+                    );
+                }
+            })
         }
     </script>
 @endpush

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 
 class ContactUs extends Model
 {
@@ -22,8 +23,29 @@ class ContactUs extends Model
      * @var array
      */
     protected $fillable = [
-        'phone_number', 'email_address', 'address',
-        'location_map', 'provinces_id', 'regencies_id',
-        'zip_code', 'country', 'office_hours'
+        'uuid',
+        'phone_number',
+        'email_address',
+        'address',
+        'location_map',
+        'provinces_id',
+        'regencies_id',
+        'zip_code',
+        'country',
+        'office_hours'
     ];
+
+    /**
+     *
+     * boot
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->uuid = (string) Uuid::uuid4();
+        });
+    }
 }

@@ -14,12 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ordered_detail_images', function (Blueprint $table) {
-            $table->id('ordered_image_id');
+            $table->id();
+            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('order_detail_id');
             $table->longText('description')->nullable();
             $table->string('image_path')->nullabel();
-            $table->foreign('order_detail_id')->references('order_detail_id')->on('order_details');
             $table->timestamps();
+
+            // Define Foreign Key
+            $table->foreign('order_detail_id')->references('id')->on('order_details');
         });
     }
 

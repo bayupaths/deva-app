@@ -33,7 +33,7 @@
                             <table id="categories-table" class="table table-striped table-borderless" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th style="width: 8%">ID</th>
+                                        <th style="width: 8%">No</th>
                                         {{-- <th style="width: 15%">Image</th> --}}
                                         <th style="width: 20%">Nama</th>
                                         <th style="width: 20%">Slug</th>
@@ -41,9 +41,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $increment = 1;
+                                    @endphp
                                     @foreach ($categories as $category)
                                         <tr>
-                                            <td>{{ $category->category_id }}</td>
+                                            <td>{{ $increment++ }}</td>
                                             {{-- <td>
                                                 <img src="{{ Storage::url($category->image) }}" class="img-fluid"
                                                     style="width: 70px" alt="...">
@@ -57,15 +60,15 @@
                                                         <i data-feather="edit" class="feather-14" data-toggle="tooltip"
                                                             title="Edit" data-placement="top"></i>
                                                     </a>
-                                                    <form action="{{ route('category.destroy', $category->category_id) }}"
+                                                    <form action="{{ route('category.destroy', $category->id) }}"
                                                         method="post">
                                                         {{ method_field('DELETE') }}
                                                         {{ csrf_field() }}
                                                         <button type="submit"
-                                                            class="delete-category-{{ $category->category_id }}"
+                                                            class="delete-category-{{ $category->id }}"
                                                             style="display: none"></button>
                                                         <button type="button"
-                                                            onclick="return confirmDelete({{ $category->category_id }})"
+                                                            onclick="return confirmDelete({{ $category->id }})"
                                                             class="btn btn-sm btn-danger delete-category">
                                                             <i data-feather="trash-2" class="feather-14"
                                                                 data-toggle="tooltip" title="Hapus"

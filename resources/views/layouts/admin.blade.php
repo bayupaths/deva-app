@@ -22,7 +22,7 @@
 
 <body>
 
-    <div id="app" class="wrapper">
+    <div id="app" class="wrapper page-dashboard">
         @include('includes.admin.sidebar')
 
         <div class="main">

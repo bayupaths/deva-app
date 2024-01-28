@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Ramsey\Uuid\Uuid;
 
 class Admin extends Authenticatable
 {
@@ -16,7 +16,7 @@ class Admin extends Authenticatable
      *
      * @var string
      */
-    protected $primaryKey = 'admin_id';
+    protected $primaryKey = 'id';
 
     /**
      * fillable
@@ -24,6 +24,7 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'uuid',
         'name',
         'email',
         'username',
@@ -42,6 +43,14 @@ class Admin extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->uuid = (string) Uuid::uuid4();
+        });
+    }
 
     /**
      * isAdmin
@@ -68,8 +77,8 @@ class Admin extends Authenticatable
      *
      * @return void
      */
-    public function order()
+    public function orders()
     {
-        return $this->hasMany(Order::class, 'admin_id', 'admin_id');
+        return $this->hasMany(Order::class, 'admin_id', 'id');
     }
 }

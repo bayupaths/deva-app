@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class Payment extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * table payments
@@ -22,7 +22,7 @@ class Payment extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'payment_id';
+    protected $primaryKey = 'id';
 
     /**
      * fillable
@@ -30,17 +30,34 @@ class Payment extends Model
      * @var array
      */
     protected $fillable = [
-        'order_id', 'payment_code', 'payement_method', 'card_number',
-        'cardholder_name', 'payement_date', 'payement_amount', 'payement_status'
+        'uuid',
+        'invoice_id',
+        'payment_date',
+        'payment_amount',
+        'payment_method',
+        'transaction_reference'
     ];
+
+    /**
+     * boot
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->uuid = (string) Uuid::uuid4();
+        });
+    }
 
     /**
      * order
      *
      * @return void
      */
-    public function order()
+    public function invoices()
     {
-        $this->belongsTo(Order::class, 'order_id');
+        return $this->belongsTo(Invoice::class, 'invoice_id');
     }
 }

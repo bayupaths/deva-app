@@ -67,19 +67,19 @@
                                 <tbody>
                                     @forelse ($orders as $item)
                                         <tr>
-                                            <td>{{ $item->order->order_code }}</td>
-                                            <td>{{ $item->order->user->name }}</td>
-                                            <td>{{ Carbon\Carbon::parse($item->order->order_date)->format('d F Y, H:i') ?? '' }}
+                                            <td>{{ $item->orders->order_code }}</td>
+                                            <td>{{ $item->orders->users->name }}</td>
+                                            <td>{{ Carbon\Carbon::parse($item->orders->order_date)->format('d F Y, H:i') ?? '' }}
                                             </td>
-                                            <td>{{ $item->product->name }}</td>
+                                            <td>{{ $item->products->name }}</td>
 
-                                            @if ($item->order->payment)
+                                            @if ($item->orders->invoices)
                                                 @php
-                                                    $statusColor = \App\Providers\OrderHelperProvider::getPaymentStatusColor($item->order->payment->payment_status);
+                                                    $statusColor = \App\Providers\OrderHelperProvider::getPaymentStatusColor($item->orders->invoices->status);
                                                 @endphp
                                                 <td> <a href="#">
                                                         <span
-                                                            class="badge {{ $statusColor }}">{{ $item->order->payment->payment_status }}</span>
+                                                            class="badge {{ $statusColor }}">{{ $item->orders->invoices->status }}</span>
                                                     </a>
                                                 </td>
                                             @else
@@ -87,17 +87,17 @@
                                                     <span class="badge bg-secondary">Unpaid</span>
                                                 </td>
                                             @endif
-                                            <td>Rp. {{ number_format($item->order->total_price) }}</td>
+                                            <td>Rp. {{ number_format($item->orders->total_price) }}</td>
                                             @php
-                                                $statusColor = \App\Providers\OrderHelperProvider::getOrderStatusColor($item->order->order_status);
+                                                $statusColor = \App\Providers\OrderHelperProvider::getOrderStatusColor($item->orders->order_status);
                                             @endphp
                                             <td>
                                                 <a href="#"><span
-                                                        class="badge {{ $statusColor }}">{{ $item->order->order_status }}
+                                                        class="badge {{ $statusColor }}">{{ $item->orders->order_status }}
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.order.details', $item->order->order_code ) }}" class="btn btn-primary">
+                                                <a href="{{ route('admin.order.details', $item->orders->order_code ) }}" class="btn btn-primary">
                                                     <i data-feather="chevron-right" class="feather-14"></i>
                                                 </a>
                                             </td>

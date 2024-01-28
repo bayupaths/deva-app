@@ -21,8 +21,8 @@ class DashboardController extends Controller
         $totalOrder = Order::count();
 
 
-        $recentOrders =  OrderDetail::with(['order.user'])->latest()->take(5)->get();
-        $recentPayments = Payment::with(['order.user'])->latest()->take(5)->get();
+        $recentOrders =  OrderDetail::with(['orders.users'])->latest()->take(5)->get();
+        $recentPayments = Payment::with(['orders.users'])->latest()->take(5)->get();
 
         return view('pages.admin.dashboard.index', [
             'totalSales' => $totalSales,

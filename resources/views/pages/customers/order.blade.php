@@ -47,23 +47,22 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        {{-- @if ($product->productGallery()->exists())
-                                            <img src="{{ Storage::url($product->productGallery->first()->file_path) }}"
-                                                alt="..." class="order-image">
-                                        @endif --}}
+                                        @if ($product->galleries()->exists())
+                                            <img src="{{ Storage::url($product->galleries->first()->file_path) }}"
+                                                alt="..." class="order-image" width="100px">
+                                        @endif
                                     </td>
                                     <td>
-                                        {{-- <div class="product-title">{{ $product->name }}</div>
-                                        <div class="product-subtitle">by {{ $product->productCategory->name }}</div> --}}
+                                        <div class="product-title">{{ $product->name }}</div>
+                                        <div class="product-subtitle">kategori : {{ $product->categories->name }}</div>
                                     </td>
                                     <td>
-                                        {{-- <div class="product-title">${{ number_format($product->price) }}</div>
-                                        <div class="product-subtitle">USD</div> --}}
+                                        <div class="product-title">Rp. {{ number_format($product->price) }}</div>
                                     </td>
                                     <td>
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <input type="number" class="form-control w-100" name="quantity" min="0"
-                                                max="500">
+                                                max="500" id="quantityProduct">
                                             <label for="quantity">Pcs</label>
                                         </div>
                                     </td>
@@ -72,8 +71,12 @@
                         </table>
                     </div>
                 </div>
-                <form action="" method="post" enctype="multipart/form-data">
+                <form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="product_id" id="productID" value="{{ $product->id }}">
+                    <input type="hidden" name="product_price" id="productPrice" value="{{ $product->price }}">
+                    <input type="hidden" name="total_price" id="finalTotalPrice" value="0">
+                    <input type="hidden" name="product_quantity" id="finalProductQty" value="0">
                     <div class="row" data-aos="fade-up" data-aos-delay="150">
                         <div class="col-10">
                             <hr>
@@ -84,44 +87,48 @@
                         {{-- <input type="hidden" name="total_price" value="{{ $totalPrice }}"> --}}
                         <div class="row mb-2" data-aos="fade-up" data-aos-delay="200">
                             <h6 class="mb-2">Spesifikasi Produk</h6>
-                            <div class="col-md-5 mb-2">
-                                <div class="form-group">
-                                    <label for="address_one">Address 1</label>
-                                    <input type="text" class="form-control" id="address_one" aria-describedby="emailHelp"
-                                        name="address_one" value="Setra Duta Cemara" />
+                            @forelse ($product->specifications->groupBy('spec_type') as $specType => $specs)
+                                <div class="col-md-5 mb-2">
+                                    <div class="form-group">
+                                        <label for="{{ $specType }}">{{ $specs->first()->name }}</label>
+                                        <select class="form-select form-control" name="specs[]" id="{{ $specType }}">
+                                            <option value="" disabled>Pilih {{ $specs->first()->name }}</option>
+                                            @foreach ($specs as $spec)
+                                                <option value="{{ $spec->id }}"
+                                                    {{ $request->input($specType) == $spec->id ? 'selected' : '' }}>
+                                                    {{ $spec->spec_value }}
+                                                    {{ $spec->unit != null ? "($spec->unit)" : "" }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-5 mb-2">
-                                <div class="form-group">
-                                    <label for="address_two">Address 2</label>
-                                    <input type="text" class="form-control" id="address_two" aria-describedby="emailHelp"
-                                        name="address_two" value="Blok B2 No. 34" />
-                                </div>
-                            </div>
-                            <div class="col-md-5 mb-2">
-                                <div class="form-group">
-                                    <label for="address_two">Address 2</label>
-                                    <input type="text" class="form-control" id="address_two" aria-describedby="emailHelp"
-                                        name="address_two" value="Blok B2 No. 34" />
-                                </div>
-                            </div>
-                            <div class="col-md-5 mb-2">
-                                <div class="form-group">
-                                    <label for="address_two">Address 2</label>
-                                    <input type="text" class="form-control" id="address_two" aria-describedby="emailHelp"
-                                        name="address_two" value="Blok B2 No. 34" />
-                                </div>
-                            </div>
+                            @empty
+
+                            @endforelse
+                            <h6 class="mb-2 mt-4">Detail Pemesanan Produk</h6>
                             <div class="col-md-10 mb-2">
                                 <div class="form-group">
                                     <label for="orderDescriptions">Catatan Pesanan</label>
-                                    <textarea class="form-control" name="description" id="orderDescriptions" rows="5"></textarea>
+                                    <textarea class="form-control @error('order_note') is-invalid @enderror" name="order_note" id="orderDescriptions"
+                                        rows="5"></textarea>
+                                    @error('order_note')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-5 mb-2">
                                 <div class="form-group">
                                     <label for="formFile" class="form-label">Upload Gambar Desain</label>
-                                    <input class="form-control" type="file" id="formFile">
+                                    <input class="form-control @error('images') is-invalid @enderror" type="file"
+                                        id="formFile" name="images">
+                                    @error('images')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -136,15 +143,15 @@
                     </div>
                     <div class="row" data-aos="fade-up" data-aos-delay="200">
                         <div class="col-4 col-md-3">
-                            <div class="product-title">$0</div>
+                            <div class="product-title">Rp. {{ number_format($product->price) }}</div>
                             <div class="product-subtitle">Harga Produk</div>
                         </div>
                         <div class="col-4 col-md-3">
-                            <div class="product-title">$0</div>
-                            <div class="product-subtitle">Jumlah</div>
+                            <div class="product-title" id="finalQuantityProduct">0</div>
+                            <div class="product-subtitle">Jumlah Produk</div>
                         </div>
                         <div class="col-4 col-md-2">
-                            <div class="product-title">$0</div>
+                            <div class="product-title" id="totalPrice">Rp. 0</div>
                             <div class="product-subtitle">Total</div>
                         </div>
                         <div class="col-4 col-md-2">
@@ -158,15 +165,39 @@
             </div>
         </section>
     </div>
-
-    {{-- @foreach ($product->productSpecification->groupBy('spec_type') as $specType => $specifications)
-    <label for="{{ $specType }}">{{ $specType }}:</label>
-    <select name="{{ $specType }}" id="{{ $specType }}">
-        @foreach ($specifications as $specification)
-            <option value="{{ $specification->id }}">{{ $specification->spec_value }} ({{ $specification->unit }})
-            </option>
-        @endforeach
-    </select>
-    <br>
-@endforeach --}}
 @endsection
+
+@push('addon-script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mendapatkan elemen-elemen HTML yang diperlukan
+            var quantityProduct = document.getElementById('quantityProduct');
+            var productPrice = document.getElementById('productPrice');
+            var total = document.getElementById('totalPrice');
+            var finalQuantityProduct = document.getElementById('finalQuantityProduct');
+            var totalInput = document.getElementById('finalTotalPrice');
+            var finalProductQty = document.getElementById('finalProductQty');
+
+            quantityProduct.addEventListener('change', updateTotalHarga);
+
+            function updateTotalHarga() {
+                var jumlahProduk = parseInt(quantityProduct.value) || 0;
+                var hargaPerProduk = parseFloat(productPrice.value) || 0;
+
+                // Menghitung total harga
+                var totalPrice = jumlahProduk * hargaPerProduk;
+
+                var formattedTotalPrice = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                }).format(totalPrice);
+
+                // Memperbarui tampilan total harga
+                total.textContent = formattedTotalPrice;
+                finalQuantityProduct.textContent = jumlahProduk;
+                totalInput.value = totalPrice.toFixed(2);
+                finalProductQty.value = jumlahProduk;
+            }
+        });
+    </script>
+@endpush

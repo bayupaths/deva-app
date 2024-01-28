@@ -20,12 +20,12 @@ class ProductController extends Controller
         $categories = ProductCategory::all();
 
         $productsQuery = Product::with([
-            'productCategory', 'productGallery', 'productSpecification'
+            'categories', 'galleries', 'specifications'
         ])->paginate(12);
 
         if ($search) {
             $productsQuery = Product::with([
-                'productCategory', 'productGallery', 'productSpecification'
+                'categories', 'galleries', 'specifications'
             ])->where(function ($queryBuilder) use ($search) {
                 $queryBuilder->where('name', 'like', '%' . $search . '%')
                     ->orWhere('description', 'like', '%' . $search . '%');
@@ -51,8 +51,8 @@ class ProductController extends Controller
         $categories = ProductCategory::all();
 
         $products = Product::with([
-            'productCategory', 'productGallery', 'productSpecification'
-        ])->whereHas('productCategory', function ($query) use ($slug) {
+                'categories', 'galleries', 'specifications'
+        ])->whereHas('categories', function ($query) use ($slug) {
             $query->where('slug', $slug);
         })->paginate(12);
 
@@ -71,14 +71,14 @@ class ProductController extends Controller
     public function productDetail(String $slug)
     {
         $product = Product::with([
-            'productCategory', 'productGallery' => function ($query) {
+            'categories', 'galleries' => function ($query) {
                 $query->take(5);
-            }, 'productSpecification'
+            }, 'specifications'
         ])->where('slug', $slug)->firstOrFail();
 
-        $relatedProducts = Product::with(['productGallery'])
-            ->where('category_id', $product->category_id)
-            ->where('product_id', '!=', $product->product_id)
+        $relatedProducts = Product::with(['galleries'])
+            ->where('category_id', $product->id)
+            ->where('id', '!=', $product->id)
             ->inRandomOrder()->limit(4)->get();
 
         return view('pages.customers.product-detail', [

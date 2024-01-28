@@ -14,15 +14,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_specifications', function (Blueprint $table) {
-            $table->id('spec_id');
+            $table->id();
+            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('product_id');
+            $table->string('name')->nullable();
             $table->string('spec_type');
             $table->string('spec_value');
-            $table->char('unit', 50);
-            $table->longText('description')->nullabel();
-            $table->foreign('product_id')->references('product_id')->on('products');
+            $table->char('unit', 50)->nullable();
+            $table->longText('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            // Define Foreign Key
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

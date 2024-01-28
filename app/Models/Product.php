@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class Product extends Model
 {
@@ -22,7 +23,7 @@ class Product extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'product_id';
+    protected $primaryKey = 'id';
 
 
     /**
@@ -30,15 +31,36 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'price', 'description', 'stock', 'category_id'];
+    protected $fillable = [
+        'uuid',
+        'name',
+        'slug',
+        'price',
+        'description',
+        'stock',
+        'category_id'
+    ];
 
+
+    /**
+     * boot
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->uuid = (string) Uuid::uuid4();
+        });
+    }
 
     /**
      * productCategory
      *
      * @return void
      */
-    public function productCategory()
+    public function categories()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
@@ -49,9 +71,9 @@ class Product extends Model
      *
      * @return void
      */
-    public function productGallery()
+    public function galleries()
     {
-        return $this->hasMany(ProductGallery::class, 'product_id', 'product_id');
+        return $this->hasMany(ProductGallery::class, 'product_id', 'id');
     }
 
     /**
@@ -59,9 +81,9 @@ class Product extends Model
      *
      * @return void
      */
-    public function productSpecification()
+    public function specifications()
     {
-        return $this->hasMany(ProductSpecification::class, 'product_id', 'product_id');
+        return $this->hasMany(ProductSpecification::class, 'product_id', 'id');
     }
 
     /**
@@ -69,9 +91,9 @@ class Product extends Model
      *
      * @return void
      */
-    public function oderDetail()
+    public function order_details()
     {
-        return $this->hasMany(OrderDetail::class, 'product_id', 'product_id');
+        return $this->hasMany(OrderDetail::class, 'product_id', 'id');
     }
 
 }

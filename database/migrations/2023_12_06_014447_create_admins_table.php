@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->id('admin_id');
+            $table->id();
+            $table->uuid('uuid')->unique();
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->char('phone_number', 18);
             $table->string('photos')->nullable();
             $table->rememberToken();
+            $table->enum('roles', ['OWNER', 'ADMIN'])->default('ADMIN');
             $table->softDeletes();
             $table->timestamps();
         });

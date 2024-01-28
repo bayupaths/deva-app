@@ -45,9 +45,9 @@
                                         data-aos-delay="{{ $incrementProduct += 100 }}">
                                         <a href="{{ route('productDetail', $product->slug) }}" class="text-decoration-none">
                                             <div class="products-thumbnail">
-                                                @if ($product->productGallery()->exists())
+                                                @if ($product->galleries()->exists())
                                                     <div class="products-image"
-                                                        style="background-image: url('{{ Storage::url($product->productGallery->first()->file_path) }}')">
+                                                        style="background-image: url('{{ Storage::url($product->galleries->first()->file_path) }}')">
                                                     </div>
                                                 @else
                                                     <div class="products-image"

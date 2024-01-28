@@ -126,7 +126,7 @@
                                         <td>{{ $payment->payment_code }}</td>
                                         <td>{{ Carbon\Carbon::parse($payment->payment_date)->format('d F Y H:i') ?? '' }}
                                         </td>
-                                        <td>{{ $payment->order->user->name }}</td>
+                                        <td>{{ $payment->orders->users->name }}</td>
                                         <td>Rp. {{ number_format($payment->payment_amount) }}</td>
                                         @php
                                             $statusColor = \App\Providers\OrderHelperProvider::getPaymentStatusColor($payment->payment_status);
@@ -164,17 +164,17 @@
                             <tbody>
                                 @forelse ($recentOrders as $item)
                                     <tr>
-                                        <td>{{ $item->order->order_code }}</td>
-                                        <td>{{ Carbon\Carbon::parse($item->order->order_date)->format('d F Y') ?? '' }}
+                                        <td>{{ $item->orders->order_code }}</td>
+                                        <td>{{ Carbon\Carbon::parse($item->orders->order_date)->format('d F Y') ?? '' }}
                                         </td>
-                                        <td>{{ $item->product->name }}</td>
-                                        <td>{{ $item->order->user->name }}</td>
+                                        <td>{{ $item->products->name }}</td>
+                                        <td>{{ $item->orders->users->name }}</td>
                                         @php
-                                            $statusColor = \App\Providers\OrderHelperProvider::getOrderStatusColor($item->order->order_status);
+                                            $statusColor = \App\Providers\OrderHelperProvider::getOrderStatusColor($item->orders->order_status);
                                         @endphp
                                         <td>
                                             <a href="#"><span
-                                                    class="badge {{ $statusColor }}">{{ $item->order->order_status }}</span></a>
+                                                    class="badge {{ $statusColor }}">{{ $item->orders->order_status }}</span></a>
                                         </td>
 
                                     </tr>

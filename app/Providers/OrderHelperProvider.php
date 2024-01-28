@@ -30,7 +30,7 @@ class OrderHelperProvider extends ServiceProvider
     {
         return [
             'PENDING' => 'bg-secondary',
-            'PROCESSING' => 'bg-warning',
+            'PROCESSED' => 'bg-warning',
             'FINISHED' => 'bg-success',
             'CANCELED' => 'bg-danger',
         ];
@@ -45,10 +45,8 @@ class OrderHelperProvider extends ServiceProvider
     public static function getPaymentStatusColors()
     {
         return [
-            'UNPAID' => 'bg-secondary',
-            'PROCESSED' => 'bg-warning',
-            'SUCCESS' => 'bg-success',
-            'FAILED' => 'bg-danger',
+            'UNPAID' => 'bg-danger',
+            'PAID' => 'bg-success',
         ];
     }
 

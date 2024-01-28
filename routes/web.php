@@ -27,9 +27,27 @@ Route::get('/product/category/{slug}', [App\Http\Controllers\ProductController::
 Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 'productDetail'])
     ->name('productDetail');
 
+
+
 Route::group(['middleware' => 'customerauth'], function () {
-    Route::get('/purchase_order', [App\Http\Controllers\OrderController::class, 'create'])->name('purchase.order');
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.customer');
+
+    // Route untuk proses checkout order
+    Route::post('/order/{slug}/checkout', [App\Http\Controllers\OrderController::class, 'create'])->name('order.checkout');
+    Route::post('/order/store', [App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
+    Route::get('/order/{code}/detail', [App\Http\Controllers\OrderController::class, 'detail_order'])->name('order.detail');
+    Route::get('/order/success/{invoice}', [App\Http\Controllers\OrderController::class, 'success'])->name('order.success');
+    Route::get('/order/histories', [App\Http\Controllers\ProfileController::class, 'histories'])->name('order.history');
+    Route::get('/order/invoices', [App\Http\Controllers\ProfileController::class, 'invoices'])->name('order.invoice');
+
+    // Route untuk proses create invoice
+    Route::post('/invoice/create', [App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
+    Route::get('/invoice/{code}/detail', [App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
+    Route::get('/invoice/{code}/print', [App\Http\Controllers\InvoiceController::class, 'print'])->name('invoice.print');
+
+    // Route untuk proses pembayaran dengan payment gateway
+    Route::get('/payment/{invoice}', [App\Http\Controllers\PaymentController::class, 'payment'])->name('payment.create');
+    Route::get('/payment/callback', [App\Http\Controllers\PaymentController::class, 'callback'])->name('payment.callback');
 });
 
 /**
@@ -52,6 +70,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders');
             Route::get('/{status}/status', [App\Http\Controllers\Admin\OrderController::class, 'status_order'])->name('admin.orders.status');
             Route::get('/{code}/details', [App\Http\Controllers\Admin\OrderController::class, 'order_detail'])->name('admin.order.details');
+            Route::post('/update-order-status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('updateOrderStatus');
         });
         // route invoice
         Route::get('/transaction', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transaction');
@@ -60,11 +79,22 @@ Route::group(['prefix' => 'admin'], function () {
 
         // route master data
         Route::resource('/category', App\Http\Controllers\Admin\CategoryController::class);
+
         Route::resource('/product', App\Http\Controllers\Admin\ProductController::class);
-        Route::get('/products/{id}/galleries', [App\Http\Controllers\Admin\ProductGalleryController::class, 'index'])->name('product.galleries');
-        Route::post('/products/galleries_upload', [App\Http\Controllers\Admin\ProductGalleryController::class, 'upload'])->name('galleries.upload');
-        Route::post('/products/galleries_store', [App\Http\Controllers\Admin\ProductGalleryController::class, 'store'])->name('galleries.store');
-        Route::get('/products/{id}/specifications', [App\Http\Controllers\Admin\ProductSpecificationController::class, 'index'])->name('product.specs');
+        Route::group(['prefix' => 'products'], function () {
+            Route::get('/galleries/{id}', [App\Http\Controllers\Admin\ProductGalleryController::class, 'index'])->name('product.galleries');
+            Route::post('/galleries/store', [App\Http\Controllers\Admin\ProductGalleryController::class, 'store'])->name('galleries.store');
+            Route::post('/galleries/upload', [App\Http\Controllers\Admin\ProductGalleryController::class, 'upload'])->name('galleries.upload');
+            Route::delete('/galleries/{id}/delete', [App\Http\Controllers\Admin\ProductGalleryController::class, 'destroy'])->name('galleries.delete');
+
+            Route::resource('/specifications', App\Http\Controllers\Admin\ProductSpecificationController::class);
+            Route::get('/{id}/specifications', [App\Http\Controllers\Admin\ProductSpecificationController::class, 'getSpecProduct'])->name('product.specs');
+            Route::get('/getSpecificationName/{specType}', [App\Http\Controllers\Admin\ProductSpecificationController::class, 'getSpecificationName'])
+                ->name('getSpecName');
+        });
+
+
+
 
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
         Route::patch('/customer/{id}/update_status',  [App\Http\Controllers\Admin\CustomerController::class, 'update_status'])->name('update.customer.status');
@@ -76,6 +106,20 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
-Route::get('/landing-page', function () {
-    return view('landing');
+Route::get('/invoice', function () {
+    return view('pages.customers.success');
+});
+Route::get('/payments', function () {
+    $order = \App\Models\OrderDetail::with(['order.user', 'product.productGallery', 'order.payment', 'orderDetailImage'])
+            ->whereHas('order', function ($query)  {
+                $query->where('order_code', 'DEVA202401250001');
+            })
+            ->firstOrFail();
+    return view('pages.customers.payments', [
+        'order' => $order
+    ]);
+});
+
+Route::get('/invoice', function() {
+    return view('pages.customers.invoice-new');
 });

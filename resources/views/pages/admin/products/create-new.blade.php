@@ -71,13 +71,13 @@
                                     <div class="mb-3">
                                         <div class="d-flex justify-content-between">
                                             <label for="productCategory" class="form-label fw-bold">Kategori</label>
-                                            <a href="#!" class="btn-link fw-semi-bold">Tambah</a>
+                                            <a href="{{ route('category.create') }}" class="btn-link fw-semi-bold">Tambah</a>
                                         </div>
                                         <select name="category" id="productCategory"
                                             class="form-control @error('category') is-invalid @enderror" required>
                                             <option value="" disabled selected>Pilih kategori produk</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->category_id }}">{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
 
                                         </select>
@@ -121,30 +121,6 @@
                     </div>
                 </div>
             </form>
-
-            <div class="row">
-                <div class="col-lg-8 lg-12">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="mb-4">
-                                <h4 class="mb-4 fw-bold"> Produk</h4>
-                                <h5 class="mb-1">Foto Produk</h5>
-                                <input type="file" class="form-control form-control-lg">
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-12">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="mb-4">
-                                <h4 class="mb-4 fw-bold">Spesifikasi Produk</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 @endsection

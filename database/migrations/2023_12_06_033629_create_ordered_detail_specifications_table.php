@@ -14,12 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ordered_detail_specifications', function (Blueprint $table) {
-            $table->id('ordered_spec_id');
+            $table->id();
             $table->unsignedBigInteger('spec_id');
             $table->unsignedBigInteger('order_detail_id');
-            $table->foreign('spec_id')->references('spec_id')->on('product_specifications');
-            $table->foreign('order_detail_id')->references('order_detail_id')->on('order_details');
             $table->timestamps();
+
+            // Define Foreing Key
+            $table->foreign('spec_id')->references('id')->on('product_specifications');
+            $table->foreign('order_detail_id')->references('id')->on('order_details');
         });
     }
 

@@ -6,13 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductGallery;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductGalleryController extends Controller
 {
 
-    public function index($id)
+    public function index($uuid)
     {
-        $product = Product::with(['productGallery', 'productCategory'])->findOr($id);
+        $product = Product::with(['galleries', 'categories'])
+            ->where('uuid', $uuid)->firstOr();
         return view('pages.admin.products.product-galleries', [
             'product' => $product
         ]);
@@ -20,13 +23,14 @@ class ProductGalleryController extends Controller
 
     public function store(Request $request)
     {
+        $uuid = $request->input('product_uuid');
         $product_id = $request->input('product_id');
         $fileName = $request->input('file_name');
         $fileType = $request->input('file_type');
         $fileSize = $request->input('file_size');
         $filePath = $request->input('file_path');
 
-        foreach($fileName as $index => $file) {
+        foreach ($fileName as $index => $file) {
             ProductGallery::create([
                 'product_id' => $product_id,
                 'file_name' => $file,
@@ -36,8 +40,7 @@ class ProductGalleryController extends Controller
             ]);
         }
 
-        return redirect()->route('product.galleries', $product_id);
-
+        return redirect()->route('product.galleries', $uuid);
     }
 
     public function upload(Request $request)
@@ -56,5 +59,21 @@ class ProductGalleryController extends Controller
             // 'upload' => $upload,
             'status' => true
         ]);
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $image = ProductGallery::findOrFail($id);
+            if (Storage::disk('public')->exists($image->file_path)) {
+                Storage::disk('public')->delete($image->file_path);
+            }
+            $image->delete();
+            return response()->json(['message' => 'Foto berhasil dihapus']);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Foto tidak ditemukan', 'message' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Terjadi kesalahan saat menghapus foto', 'message' => $e->getMessage()], 500);
+        }
     }
 }

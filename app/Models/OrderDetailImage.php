@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 
 class OrderDetailImage extends Model
 {
@@ -21,21 +22,39 @@ class OrderDetailImage extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'ordered_image_id';
+    protected $primaryKey = 'id';
 
     /**
      * fillable
      *
      * @var array
      */
-    protected $fillable = ['order_detail_id', 'description', 'image_path'];
+    protected $fillable = [
+        'uuid',
+        'description',
+        'image_path',
+        'order_detail_id',
+    ];
+
+    /**
+     * boot
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->uuid = (string) Uuid::uuid4();
+        });
+    }
 
     /**
      * orderDetail
      *
      * @return void
      */
-    public function orderDetail()
+    public function order_details()
     {
         return $this->belongsTo(OrderDetail::class, 'order_detail_id');
     }

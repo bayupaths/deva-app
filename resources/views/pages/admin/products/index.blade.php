@@ -43,16 +43,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $increment = 1;
+                                    @endphp
                                     @foreach ($products as $product)
                                         <tr>
-                                            <td>{{ $product->product_id }}</td>
+                                            <td>{{ $increment++ }}</td>
                                             <td>{{ $product->name }}</td>
-                                            <td>{{ $product->productCategory->name }}</td>
+                                            <td>{{ $product->categories->name }}</td>
                                             <td>Rp. {{ number_format($product->price) }}</td>
                                             <td>{{ $product->stock }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
-                                                    <a href="{{ route('product.show', $product->product_id) }}" class="btn btn-primary">Detail</a>
+                                                    <a href="{{ route('product.show', $product->uuid) }}" class="btn btn-primary">Detail</a>
                                                     <button type="button"
                                                         class="btn btn-primary dropdown-toggle dropdown-toggle-split"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -60,20 +63,20 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a class="dropdown-item"
-                                                                href="{{ route('product.galleries', $product->product_id) }}">Galeri</a>
+                                                                href="{{ route('product.galleries', $product->uuid) }}">Galeri</a>
                                                         </li>
-                                                        <li><a class="dropdown-item" href="{{ route('product.specs', $product->product_id) }}">Spesifikasi</a></li>
+                                                        <li><a class="dropdown-item" href="{{ route('product.specs', $product->uuid) }}">Spesifikasi</a></li>
                                                         <li>
                                                             <hr class="dropdown-divider">
                                                         </li>
-                                                        <form action="{{ route('product.destroy', $product->product_id) }}"
+                                                        <form action="{{ route('product.destroy', $product->uuid) }}"
                                                             method="post">
                                                             {{ method_field('DELETE') }}
                                                             {{ csrf_field() }}
-                                                            <button type="submit" id="delete-product-{{ $product->product_id }}"
+                                                            <button type="submit" id="delete-product-{{ $product->uuid }}"
                                                                 style="display: none"></button>
                                                             <li><a class="dropdown-item delete-product"
-                                                                    onclick="return confirmDelete({{ $product->product_id }})" href="#">
+                                                                    onclick="return confirmDelete({{ $product->uuid }})" href="#">
                                                                     Hapus Produk
                                                                 </a>
                                                             </li>

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+    Detail Produk {{ $product->name }}
 @endsection
 
 @section('content')
@@ -62,7 +63,7 @@
                             </nav>
                             <div class="tab-content mt-2" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
-                                    aria-labelledby="nav-description-tab">{{ $product->description }}</div>
+                                    aria-labelledby="nav-description-tab">{!! $product->description !!}</div>
                                 <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
                                     ...</div>
                             </div>
@@ -70,24 +71,27 @@
                     </div>
                     <div class="col-lg-4 col-md-6 product-detail" data-aos="fade-up">
                         <h3 class="product-title">{{ $product->name }}</h3>
-                        <h5 class="product-category">Kategori : {{ $product->productCategory->name }}</h5>
+                        <h5 class="product-category">Kategori : {{ $product->categories->name }}</h5>
                         <h5 class="product-price">Harga : <span>RP. {{ number_format($product->price) }}</span></h5>
-                        <form action="{{ route('purchase.order') }}" method="GET">
+                        <form action="{{ route('order.checkout', $product->slug) }}" method="POST">
                             @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->product_id }}">
                             <div class="product-specification">
                                 <h5>Spesifikasi Produk</h5>
-                                @foreach ($product->productSpecification->groupBy('spec_type') as $specType => $specifications)
-                                    <label for="{{ $specType }}">{{ $specType }}:</label>
+                                @forelse ($product->specifications->groupBy('spec_type') as $specType => $specifications)
+                                    <label for="{{ $specType }}">{{ $specifications->first()->name }}:</label>
                                     <select class="form-select" name="{{ $specType }}" id="{{ $specType }}">
-                                        <option>Pilih {{ $specType }}</option>
+                                        <option>Pilih {{ $specifications->first()->name }}</option>
                                         @foreach ($specifications as $specification)
                                             <option value="{{ $specification->spec_id }}">{{ $specification->spec_value }}
-                                                ({{ $specification->unit }})
+                                                {{ $specification->unit != null ? "($specification->unit)" : "" }}
                                             </option>
                                         @endforeach
                                     </select>
                                     <br>
-                                @endforeach
+                                @empty
+
+                                @endforelse
                             </div>
                             <div class="action">
                                 @guest
@@ -116,9 +120,9 @@
                                         <a href="{{ route('productDetail', $related->slug) }}"
                                             class="text-decoration-none">
                                             <div class="products-thumbnail">
-                                                @if ($related->productGallery()->exists())
+                                                @if ($related->galleries()->exists())
                                                     <div class="products-image"
-                                                        style="background-image: url('{{ Storage::url($related->productGallery->first()->file_path) }}')">
+                                                        style="background-image: url('{{ Storage::url($related->galleries->first()->file_path) }}')">
                                                     </div>
                                                 @else
                                                     <div class="products-image"
@@ -153,9 +157,9 @@
             data: {
                 activePhoto: 1,
                 photos: [
-                    @foreach ($product->productGallery as $gallery)
+                    @foreach ($product->galleries as $gallery)
                         {
-                            id: {{ $gallery->galery_id }},
+                            id: {{ $gallery->id }},
                             url: "{{ Storage::url($gallery->file_path) }}",
                         },
                     @endforeach

@@ -19,7 +19,7 @@ class OrderedDetailSpecifications extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'ordered_spec_id';
+    protected $primaryKey = 'id';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -44,7 +44,7 @@ class OrderedDetailSpecifications extends Model
      *
      * @return void
      */
-    public function productSpec()
+    public function specifications()
     {
         return $this->belongsTo(ProductSpecification::class);
     }
@@ -54,7 +54,7 @@ class OrderedDetailSpecifications extends Model
      *
      * @return void
      */
-    public function OrderDetail()
+    public function order_details()
     {
         return $this->belongsTo(OrderDetail::class);
     }
