@@ -48,6 +48,7 @@ Route::group(['middleware' => 'customerauth'], function () {
     // Route untuk proses pembayaran dengan payment gateway
     Route::get('/payment/{invoice}', [App\Http\Controllers\PaymentController::class, 'payment'])->name('payment.create');
     Route::post('/payment/callback', [App\Http\Controllers\PaymentController::class, 'callback'])->name('payment.callback');
+    Route::get('/payment/success', [App\Http\Controllers\PaymentController::class, 'success'])->name('payment.success');
 });
 
 /**

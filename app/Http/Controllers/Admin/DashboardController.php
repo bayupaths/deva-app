@@ -22,7 +22,7 @@ class DashboardController extends Controller
 
 
         $recentOrders =  OrderDetail::with(['orders.users'])->latest()->take(5)->get();
-        $recentPayments = Payment::with(['orders.users'])->latest()->take(5)->get();
+        // $recentPayments = Payment::with(['orders.users'])->latest()->take(5)->get();
 
         return view('pages.admin.dashboard.index', [
             'totalSales' => $totalSales,
@@ -30,7 +30,8 @@ class DashboardController extends Controller
             'totalCustomer' => $totalCustomer,
             'totalOrder' => $totalOrder,
             'recentOrders' => $recentOrders,
-            'recentPayments' => $recentPayments
+            // 'recentPayments' => $recentPayments
+            'recentPayments' => array()
         ]);
     }
 }

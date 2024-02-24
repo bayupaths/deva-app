@@ -5,14 +5,27 @@ namespace  App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 use App\Models\Invoice;
+use App\Models\OrderDetail;
+use App\Models\Payment;
+
 use Midtrans\Snap;
 use Midtrans\Config;
 use Midtrans\Notification;
 
 class PaymentController extends Controller
 {
+
+    public function __construct()
+    {
+        // Set configuration midtrans
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.id3ds');
+    }
 
     /**
      * proses pembayaran dengan payment gateway midtrans
@@ -22,21 +35,21 @@ class PaymentController extends Controller
      */
     public function payment(String $invoice_number)
     {
-        $invoice = Invoice::with(['orders.users'])->where('invoice_number', $invoice_number)->firstOrFail();
-        $item = \App\Models\OrderDetail::with(['products.categories'])->where('order_id', $invoice->orders->id)->firstOr();
-        // Configuration Midtrans
-        Config::$serverKey = config('services.midtrans.serverKey');
-        Config::$isProduction = config('services.midtrans.isProduction');
-        Config::$isSanitized = config('services.midtrans.isSanitized');
-        Config::$is3ds = config('services.midtrans.id3ds');
+        $invoice = Invoice::with(['orders.users'])
+            ->where('invoice_number', $invoice_number)
+            ->firstOrFail();
+
+        $items = OrderDetail::with(['products.categories'])
+            ->where('order_id', $invoice->orders->id)
+            ->firstOr();
 
         // produk
         $product = [
-            'id' => $item->products->uuid,
-            'price' => (int)$item->product_price,
-            'quantity' => $item->product_quantity,
-            'name' => $item->products->name,
-            'category' => $item->products->categories->name,
+            'id' => $items->products->uuid,
+            'price' => (int)$items->product_price,
+            'quantity' => $items->product_quantity,
+            'name' => $items->products->name,
+            'category' => $items->products->categories->name,
             'type' => 'physical',
         ];
 
@@ -59,6 +72,13 @@ class PaymentController extends Controller
         ];
 
         try {
+
+            $existingPayment = Payment::where('invoice_id', $invoice->id)->first();
+            if ($existingPayment) {
+                // Pembayaran sebelumnya sudah berhasil, alihkan pengguna kembali ke halaman pembayaran
+                return redirect()->route('payment.success')->with('error', 'Pembayaran sudah berhasil dilakukan.');
+            }
+
             // Get Snap Payment Page URL
             $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
 
@@ -72,12 +92,6 @@ class PaymentController extends Controller
     public function callback(Request $request)
     {
         try {
-            // Set konfigurasi midtrans
-            Config::$serverKey = config('services.midtrans.serverKey');
-            Config::$isProduction = config('services.midtrans.isProduction');
-            Config::$isSanitized = config('services.midtrans.isSanitized');
-            Config::$is3ds = config('services.midtrans.id3ds');
-
             // Instance midtrans notification
             $notification = new Notification();
 
@@ -91,6 +105,35 @@ class PaymentController extends Controller
 
             // Cari transaksi berdasarkan ID
             $transaction = Invoice::where('invoice_number', $order_id)->firstOr();
+
+            switch ($status) {
+                case 'capture':
+                    # code...
+                    break;
+
+                case 'settlement':
+                    # code...
+                    break;
+
+                case 'pending':
+                    # code...
+                    break;
+                case 'deny':
+                    # code...
+                    break;
+                case 'expire':
+                    # code...
+                    break;
+                case 'cancel':
+                    # code...
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+
+
 
             // Handle notification status
             if ($status == 'capture') {
@@ -156,5 +199,41 @@ class PaymentController extends Controller
             // Return an appropriate HTTP response with an error message
             return response('Error: Exception during callback processing', 500);
         }
+    }
+
+    private function handleCapture($notification)
+    {
+        //
+    }
+
+    private function handleSettlement($notification)
+    {
+        //
+    }
+
+    private function handlePending($notification)
+    {
+        // Lakukan pembaruan pada database atau tindakan yang diperlukan untuk menangani transaksi dengan status pending
+    }
+
+    private function handleDeny($notification)
+    {
+        // Lakukan pembaruan pada database atau tindakan yang diperlukan untuk menangani transaksi dengan status deny
+    }
+
+    private function handleExpire($notification)
+    {
+        // Lakukan pembaruan pada database atau tindakan yang diperlukan untuk menangani transaksi dengan status expire
+    }
+
+    private function handleCancel($notification)
+    {
+        // Lakukan pembaruan pada database atau tindakan yang diperlukan untuk menangani transaksi dengan status cancel
+    }
+
+    private function handleUnexpectedStatus($notification)
+    {
+        // Tangani status yang tidak diharapkan dari Midtrans
+        // Misalnya, Anda dapat mencatat informasi ini untuk investigasi lebih lanjut
     }
 }

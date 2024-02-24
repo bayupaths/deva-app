@@ -45,7 +45,7 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                         <tr>
-                                            <td>{{ $user->user_id }}</td>
+                                            <td>{{ $user->id }}</td>
                                             <td> <img
                                                     src="{{ $user->photos ? Storage::url($user->photos) : url('/assets/images/profile/default-user-icon.png') }}"
                                                     class="img-fluid" style="width: 70px" alt="Foto Profile">
@@ -55,18 +55,18 @@
                                             <td>{{ $user->phone_number }}</td>
                                             <td class="text-center">
                                                 <div class="d-flex">
-                                                    <a href="{{ route('customer.show', $user->user_id) }}"
+                                                    <a href="{{ route('customer.show', $user->id) }}"
                                                         class="btn btn-sm btn-primary">
                                                         <i data-feather="info" class="feather-14" data-toggle="tooltip"
                                                             title="Show" data-placement="top"></i>
                                                     </a>
-                                                    <form action="{{ route('customer.destroy', $user->user_id) }}"
+                                                    <form action="{{ route('customer.destroy', $user->id) }}"
                                                         method="post">
                                                         {{ method_field('DELETE') }}
                                                         {{ csrf_field() }}
-                                                        <button type="submit" class="delete-customer-{{ $user->user_id }}"
+                                                        <button type="submit" class="delete-customer-{{ $user->id }}"
                                                             style="display: none"></button>
-                                                        <button type="button" onclick="return confirmDelete({{ $user->user_id }})"
+                                                        <button type="button" onclick="return confirmDelete({{ $user->id }})"
                                                             class="btn btn-sm btn-danger delete-customer">
                                                             <i data-feather="trash-2" class="feather-14"
                                                                 data-toggle="tooltip" title="Hapus"
